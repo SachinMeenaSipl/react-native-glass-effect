@@ -1,0 +1,7 @@
+{
+  "name": "shader-preview",
+  "private": true,
+  "description": "Compiles the Android AGSL glass shader with Skia (CanvasKit) and renders preview.png. No device needed.",
+  "scripts": { "preview": "node render.js" },
+  "dependencies": { "canvaskit-wasm": "0.40.0" }
+}

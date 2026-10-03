@@ -1,0 +1,15 @@
+node_modules/
+lib/
+android/build/
+android/.gradle/
+android/generated/
+ios/build/
+example/android/
+example/ios/
+*.log
+.DS_Store
+tools/android-typecheck/.cache/
+tools/shader-preview/node_modules/
+tools/shader-preview/preview.png
+tools/shader-preview/preview-black.png
+tools/ios-typecheck/.cache/

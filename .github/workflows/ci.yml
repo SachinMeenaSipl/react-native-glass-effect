@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run prepare
+      - run: npm pack --dry-run
+
+  android-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - run: npm ci
+      - run: npm run check:android
+      - run: npm run preview:shader
+      - uses: actions/upload-artifact@v4
+        with: { name: shader-preview, path: tools/shader-preview/preview.png }
+
+  ios-typecheck:
+    runs-on: ubuntu-latest   # clang + real iOS SDK headers; no macOS runner needed
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: sudo apt-get install -y clang
+      - run: npm ci
+      - run: npm run check:ios
+
+  # Native builds need the example app's android/ios folders (see example/README.md).
+  # Enable these jobs once they are committed.
+  # android:
+  #   runs-on: ubuntu-latest
+  #   steps: [checkout, setup-java 17, npm ci, cd example && npm ci, cd example/android && ./gradlew assembleDebug]
+  # ios:
+  #   runs-on: macos-15
+  #   steps: [checkout, npm ci, cd example && npm ci, cd example/ios && pod install, xcodebuild ...]

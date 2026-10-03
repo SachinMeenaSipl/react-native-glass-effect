@@ -1,0 +1,87 @@
+// Android library build for react-native-liquid-glass.
+// Values can be overridden from the host app's root build.gradle `ext { }` block.
+
+buildscript {
+  ext.getExtOrDefault = { name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["LiquidGlass_" + name]
+  }
+
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:8.7.3"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
+  }
+}
+
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["LiquidGlass_" + name]).toInteger()
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+// Runs codegen for src/specs and wires the generated Java/C++ into this library.
+apply plugin: "com.facebook.react"
+
+android {
+  namespace "com.liquidglass"
+
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+
+  defaultConfig {
+    // RN 0.76+ requires 24. Below API 31 the compat renderer is used automatically.
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+    consumerProguardFiles "proguard-rules.pro"
+  }
+
+  buildFeatures {
+    buildConfig true
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+    }
+  }
+
+  lint {
+    disable "GradleCompatible"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
+  }
+
+  sourceSets {
+    main {
+      java.srcDirs += ["generated/java", "generated/jni"]
+    }
+  }
+}
+
+repositories {
+  mavenCentral()
+  google()
+}
+
+def kotlin_version = getExtOrDefault("kotlinVersion")
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+react {
+  jsRootDir = file("../src/")
+  libraryName = "RNLiquidGlassSpec"
+  codegenJavaPackageName = "com.liquidglass"
+}
