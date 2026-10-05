@@ -2,7 +2,7 @@
 
 ```tsx
 import { ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { GlassBackdrop, LiquidGlassButton, LiquidGlassView } from '@sachin-meena/react-native-liquid-glass';
+import { GlassBackdrop, LiquidGlassButton, LiquidGlassView } from 'react-native-liquid-glass-native';
 
 export default function Screen() {
   return (

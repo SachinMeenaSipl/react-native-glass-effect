@@ -33,7 +33,7 @@
 Built-in counters (dev builds):
 
 ```ts
-import { getGlassStats, resetGlassStats } from '@sachin-meena/react-native-liquid-glass';
+import { getGlassStats, resetGlassStats } from 'react-native-liquid-glass-native';
 
 resetGlassStats();
 setTimeout(() => console.log(getGlassStats()), 1000); // work done in 1 second

@@ -1,4 +1,4 @@
-# react-native-liquid-glass
+# react-native-liquid-glass-native
 
 Liquid Glass surfaces for React Native: real, live background blur with edge refraction, rim lighting and touch response.
 
@@ -7,7 +7,7 @@ Liquid Glass surfaces for React Native: real, live background blur with edge ref
 - **One API everywhere.** You write `<LiquidGlassView>` and the library picks the best renderer for each device.
 
 ```tsx
-import { GlassBackdrop, LiquidGlassView } from '@sachin-meena/react-native-liquid-glass';
+import { GlassBackdrop, LiquidGlassView } from 'react-native-liquid-glass-native';
 
 <View style={{ flex: 1 }}>
   <GlassBackdrop style={StyleSheet.absoluteFill}>
@@ -27,7 +27,7 @@ import { GlassBackdrop, LiquidGlassView } from '@sachin-meena/react-native-liqui
 ## Install
 
 ```sh
-npm install @sachin-meena/react-native-liquid-glass
+npm install react-native-liquid-glass-native
 cd ios && pod install
 ```
 

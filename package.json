@@ -1,5 +1,5 @@
 {
-  "name": "@sachin-meena/react-native-liquid-glass",
+  "name": "react-native-liquid-glass-native",
   "version": "0.1.0",
   "description": "Liquid Glass surfaces for React Native: real background blur, refraction and lighting on Android, native materials on iOS.",
   "author": "Sachin Meena <sachin.meena3198@gmail.com>",

@@ -12,9 +12,9 @@
 ## Install
 
 ```sh
-npm install @sachin-meena/react-native-liquid-glass
+npm install react-native-liquid-glass-native
 # or
-yarn add @sachin-meena/react-native-liquid-glass
+yarn add react-native-liquid-glass-native
 ```
 
 ### iOS
@@ -30,7 +30,7 @@ Nothing to do. Autolinking handles it.
 ### Expo
 
 ```sh
-npx expo install @sachin-meena/react-native-liquid-glass
+npx expo install react-native-liquid-glass-native
 npx expo prebuild
 npx expo run:android   # or run:ios
 ```
@@ -44,7 +44,7 @@ This library contains native code, so **rebuild the app** after installing (a Me
 ## Check it worked
 
 ```tsx
-import { useGlassCapabilities } from '@sachin-meena/react-native-liquid-glass';
+import { useGlassCapabilities } from 'react-native-liquid-glass-native';
 
 const caps = useGlassCapabilities();
 console.log(caps.isNativeAvailable, caps.bestRenderer);
