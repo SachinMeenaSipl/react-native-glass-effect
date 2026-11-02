@@ -71,11 +71,45 @@ export const clear: GlassMaterial = {
   fallbackColor: FALLBACK,
 };
 
+/** Tuned against Apple's UIGlassEffect (.regular) rendered over the same scene. */
+export const liquid: GlassMaterial = {
+  blur: 4,
+  tint: { light: '#FFFFFF', dark: '#1C1C1E' },
+  tintOpacity: { light: 0.6, dark: 0.5 },
+  refraction: 1,
+  distortion: 0.02,
+  illumination: 0.8,
+  chromaticAberration: 0,
+  edgeWidth: 10,
+  borderWidth: 1,
+  borderOpacity: 0.4,
+  appearance: 'regular',
+  fallbackColor: FALLBACK,
+};
+
+/** Tuned against Apple's UIGlassEffect (.clear) rendered over the same scene. */
+export const liquidClear: GlassMaterial = {
+  blur: 0,
+  tint: { light: '#FFFFFF', dark: '#1C1C1E' },
+  tintOpacity: { light: 0.2, dark: 0.25 },
+  refraction: 1,
+  distortion: 0.02,
+  illumination: 1,
+  chromaticAberration: 0,
+  edgeWidth: 16,
+  borderWidth: 1,
+  borderOpacity: 0.4,
+  appearance: 'clear',
+  fallbackColor: FALLBACK,
+};
+
 export const MATERIALS: Readonly<Record<GlassMaterialName, GlassMaterial>> = {
   thin,
   regular,
   thick,
   clear,
+  liquid,
+  liquidClear,
 };
 
 export function isMaterialName(value: unknown): value is GlassMaterialName {

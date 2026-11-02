@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlassBackdrop, LiquidGlassView, type GlassQuality } from 'react-native-liquid-glass';
 import { BusyBackground } from '../components/BusyBackground';
+import { CONTENT_TOP } from '../layout';
 
 type Knob = 'blur' | 'refraction' | 'distortion' | 'illumination' | 'intensity';
 const STEP: Record<Knob, number> = { blur: 4, refraction: 0.1, distortion: 0.05, illumination: 0.1, intensity: 0.1 };
@@ -69,7 +70,7 @@ function Btn({ label, onPress, active }: { label: string; onPress: () => void; a
 const styles = StyleSheet.create({
   root: { flex: 1 },
   lens: {
-    position: 'absolute', top: 90, alignSelf: 'center',
+    position: 'absolute', top: CONTENT_TOP + 12, alignSelf: 'center',
     width: 260, height: 160, alignItems: 'center', justifyContent: 'center',
   },
   lensText: { fontSize: 22, fontWeight: '800' },

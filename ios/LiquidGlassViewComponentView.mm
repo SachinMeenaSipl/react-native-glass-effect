@@ -1,5 +1,7 @@
 #import "LiquidGlassViewComponentView.h"
 
+#import "LGShaderRenderer.h"
+
 #import <React/RCTConversions.h>
 #import <react/renderer/components/RNLiquidGlassSpec/ComponentDescriptors.h>
 #import <react/renderer/components/RNLiquidGlassSpec/Props.h>
@@ -47,6 +49,30 @@ NSInteger LGLiveGlassViewCount(void)
   LGChildContainerView *_childContainer;
   BOOL _hasAppliedProps;
   BOOL _countedLive;
+  CGFloat _cornerRadius;
+
+  // iosRenderer="shader"
+  BOOL _wantsShader;
+  BOOL _shaderUnavailable;
+  BOOL _warnedNoBackdrop;
+  BOOL _forceDraw;
+  LGShaderRenderer *_shader;
+  UIView *_shaderHost;
+  CADisplayLink *_displayLink;
+  __weak UIView *_backdrop;
+  LGShaderUniforms _uniforms;
+  CGFloat _blurPx;
+  NSString *_backdropId;
+  NSInteger _frameInterval;
+  BOOL _staticQuality;
+  BOOL _capturedOnce;
+  NSUInteger _tick;
+  BOOL _touching;
+  BOOL _forcePressed;
+  BOOL _interactive;
+  CGPoint _touchPoint;
+  CGFloat _touchStrength;
+  CGFloat _press;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -86,7 +112,13 @@ NSInteger LGLiveGlassViewCount(void)
     _childContainer = [[LGChildContainerView alloc] initWithFrame:self.bounds];
     _childContainer.autoresizingMask = fill;
 
+    _shaderHost = [[UIView alloc] initWithFrame:self.bounds];
+    _shaderHost.autoresizingMask = fill;
+    _shaderHost.userInteractionEnabled = NO;
+    _shaderHost.hidden = YES;
+
     [self addSubview:_effectView];
+    [self addSubview:_shaderHost];
     [self addSubview:_fallbackView];
     [self addSubview:_childContainer];
 
@@ -132,7 +164,9 @@ NSInteger LGLiveGlassViewCount(void)
 
 - (void)applyProps:(const LiquidGlassViewProps &)p
 {
-  const CGFloat radius = MAX(0, p.cornerRadius);
+  // Clamped to half the shortest side, like Android's GlassShape (see applyCornerRadius).
+  _cornerRadius = MAX(0, p.cornerRadius);
+  [self applyCornerRadius];
   const BOOL reduce = p.reduceTransparency || UIAccessibilityIsReduceTransparencyEnabled();
 
   UIColor *tint = RCTUIColorFromSharedColor(p.tintColor) ?: UIColor.whiteColor;
@@ -140,13 +174,9 @@ NSInteger LGLiveGlassViewCount(void)
   const CGFloat tintOpacity = MIN(MAX(p.tintOpacity, 0), 1);
 
   // Shape
-  _effectView.layer.cornerRadius = radius;
-  _fallbackView.layer.cornerRadius = radius;
-  self.layer.cornerRadius = radius;
   self.layer.cornerCurve = kCACornerCurveContinuous;
   self.clipsToBounds = p.clipContent;
   _childContainer.clipsToBounds = p.clipContent;
-  _childContainer.layer.cornerRadius = p.clipContent ? radius : 0;
   _childContainer.layer.cornerCurve = kCACornerCurveContinuous;
 
   // Border (on the effect view, so it never fights RN's own style.border*)
@@ -158,6 +188,7 @@ NSInteger LGLiveGlassViewCount(void)
   _fallbackView.backgroundColor = fallback;
   _fallbackView.hidden = !reduce;
   _effectView.hidden = reduce;
+  [self updateShaderWithProps:p tint:tint tintOpacity:tintOpacity reduce:reduce];
   if (reduce) {
     return;
   }
@@ -205,6 +236,227 @@ NSInteger LGLiveGlassViewCount(void)
   }
 }
 
+/** A radius above half the shortest side makes Core Animation draw a broken shape. */
+- (void)applyCornerRadius
+{
+  const CGSize size = self.bounds.size;
+  const CGFloat radius = size.width > 0 && size.height > 0
+      ? MIN(_cornerRadius, MIN(size.width, size.height) / 2)
+      : _cornerRadius;
+  _effectView.layer.cornerRadius = radius;
+  _fallbackView.layer.cornerRadius = radius;
+  self.layer.cornerRadius = radius;
+  _childContainer.layer.cornerRadius = self.clipsToBounds ? radius : 0;
+  if (_wantsShader) {
+    const CGFloat scale = self.window.screen.scale ?: UIScreen.mainScreen.scale;
+    _uniforms.radius = (float)(radius * scale);
+    _forceDraw = YES;
+  }
+}
+
+#pragma mark - iosRenderer="shader"
+
+- (void)updateShaderWithProps:(const LiquidGlassViewProps &)p
+                         tint:(UIColor *)tint
+                  tintOpacity:(CGFloat)tintOpacity
+                       reduce:(BOOL)reduce
+{
+  _wantsShader = p.iosRenderer == LiquidGlassViewIosRenderer::Shader && !reduce && !_shaderUnavailable;
+  if (!_wantsShader) {
+    [self stopShader];
+    return;
+  }
+  if (!_shader) {
+    _shader = [LGShaderRenderer create];
+    if (!_shader) {
+      // Same promise as Android: a device limit downgrades the look, it never crashes.
+      _shaderUnavailable = YES;
+      _wantsShader = NO;
+      return;
+    }
+    [_shaderHost.layer addSublayer:_shader.layer];
+  }
+
+  const CGFloat scale = self.window.screen.scale ?: UIScreen.mainScreen.scale;
+  const CGFloat rad = p.lightAngle * M_PI / 180.0;
+  CGFloat r = 1, g = 1, b = 1, a = 1;
+  [tint getRed:&r green:&g blue:&b alpha:&a];
+  const CGFloat tintAlpha = a * tintOpacity;
+
+  _shader.layer.contentsScale = scale;
+  _blurPx = MAX(p.blurRadius, 0) * scale;
+  _uniforms.radius = (float)(MIN(MAX(p.cornerRadius, 0),
+                                 MIN(self.bounds.size.width, self.bounds.size.height) / 2) * scale);
+  _uniforms.edge = (float)(MAX(p.edgeWidth, 0) * scale);
+  _uniforms.refraction = MIN(MAX(p.refraction, 0), 1);
+  _uniforms.distortion = MIN(MAX(p.distortion, 0), 1);
+  _uniforms.chroma = p.quality == LiquidGlassViewQuality::High || p.quality == LiquidGlassViewQuality::Auto
+      ? MIN(MAX(p.chromaticAberration, 0), 1)
+      : 0;
+  _uniforms.illumination = MIN(MAX(p.illumination, 0), 1);
+  _uniforms.lightX = (float)cos(rad);
+  _uniforms.lightY = (float)sin(rad);
+  _uniforms.tintR = (float)r;
+  _uniforms.tintG = (float)g;
+  _uniforms.tintB = (float)b;
+  _uniforms.tintA = (float)tintAlpha;
+  _uniforms.borderWidth = (float)(MAX(p.glassBorderWidth, 0) * scale);
+  _uniforms.borderOpacity = MIN(MAX(p.glassBorderOpacity, 0), 1);
+
+  _frameInterval = p.quality == LiquidGlassViewQuality::Low ? 3 : 1;
+  _staticQuality = p.quality == LiquidGlassViewQuality::Static;
+  _backdropId = [NSString stringWithUTF8String:p.backdropId.c_str()];
+  _forcePressed = p.pressed;
+  _interactive = p.interactive;
+  _backdrop = nil;
+  _capturedOnce = NO;
+  _forceDraw = YES;
+  [self startDisplayLink];
+}
+
+- (void)startDisplayLink
+{
+  if (_displayLink || !self.window || !_wantsShader) {
+    return;
+  }
+  _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(renderFrame)];
+  [_displayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
+}
+
+- (void)stopShader
+{
+  [_displayLink invalidate];
+  _displayLink = nil;
+  [_shader releaseResources];
+  _shaderHost.hidden = YES;
+  _backdrop = nil;
+}
+
+/** Depth-first search for <GlassBackdrop>, skipping any backdrop that contains this glass. */
+- (UIView *)findBackdropIn:(UIView *)view marker:(NSString *)marker
+{
+  UIView *found = nil;
+  for (UIView *child in view.subviews) {
+    if ([child isKindOfClass:RCTViewComponentView.class] &&
+        [((RCTViewComponentView *)child).nativeId isEqualToString:marker] &&
+        ![self isDescendantOfView:child]) {
+      found = child; // the last match is the topmost, like Android's "most recent"
+    }
+    UIView *nested = [self findBackdropIn:child marker:marker];
+    found = nested ?: found;
+  }
+  return found;
+}
+
+- (void)renderFrame
+{
+  _tick++;
+  if (_frameInterval > 1 && _tick % _frameInterval != 0) {
+    return;
+  }
+  UIView *backdrop = _backdrop;
+  if (!backdrop) {
+    NSString *marker = [@"LiquidGlassBackdrop:" stringByAppendingString:_backdropId ?: @""];
+    backdrop = self.window ? [self findBackdropIn:self.window marker:marker] : nil;
+    _backdrop = backdrop;
+  }
+  if (!backdrop) {
+    // No backdrop yet, or a setup mistake: stay on system glass and try again next frame.
+    if (!_warnedNoBackdrop && _tick > 120) {
+      _warnedNoBackdrop = YES;
+      NSLog(@"[LiquidGlass] iosRenderer=\"shader\" found no <GlassBackdrop>, using system glass.");
+    }
+    _shaderHost.hidden = YES;
+    _effectView.hidden = NO;
+    return;
+  }
+
+  const BOOL reduceMotion = UIAccessibilityIsReduceMotionEnabled();
+  const CGFloat pressTarget = (_touching || _forcePressed) ? 1 : 0;
+  const CGFloat touchTarget = _touching ? 1 : 0;
+  const CGFloat oldPress = _press;
+  const CGFloat oldTouch = _touchStrength;
+  _press += (pressTarget - _press) * 0.25;
+  _touchStrength += (touchTarget - _touchStrength) * 0.25;
+  if (fabs(pressTarget - _press) < 0.005) {
+    _press = pressTarget;
+  }
+  if (fabs(touchTarget - _touchStrength) < 0.005) {
+    _touchStrength = touchTarget;
+  }
+  const BOOL animating = _press != oldPress || _touchStrength != oldTouch;
+
+  if (_staticQuality && _capturedOnce && !animating && !_forceDraw) {
+    return;
+  }
+
+  const CGFloat scale = _shader.layer.contentsScale;
+  _uniforms.press = (float)_press;
+  _uniforms.touchStrength = (float)_touchStrength;
+  _uniforms.touchX = (float)(_touchPoint.x * scale);
+  _uniforms.touchY = (float)(_touchPoint.y * scale);
+
+  [CATransaction begin];
+  [CATransaction setDisableActions:YES];
+  _shader.layer.frame = _shaderHost.bounds;
+  if (animating) {
+    const CGFloat squish = reduceMotion ? 1 : 1 - 0.03 * _press;
+    const CATransform3D transform = CATransform3DMakeScale(squish, squish, 1);
+    _shaderHost.layer.transform = transform;
+    _childContainer.layer.transform = transform;
+  }
+  [CATransaction commit];
+
+  const BOOL drawn = [_shader drawGlass:self
+                               backdrop:backdrop
+                               uniforms:_uniforms
+                                 blurPx:_blurPx
+                                  force:_forceDraw || animating];
+  if (drawn) {
+    _forceDraw = NO;
+    _capturedOnce = YES;
+  }
+  _shaderHost.hidden = !drawn;
+  _effectView.hidden = drawn;
+}
+
+- (void)updateTouch:(NSSet<UITouch *> *)touches active:(BOOL)active
+{
+  if (!_wantsShader || !_interactive) {
+    return;
+  }
+  _touching = active;
+  UITouch *touch = touches.anyObject;
+  if (active && touch) {
+    _touchPoint = [touch locationInView:self];
+    _forceDraw = YES;
+  }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+  [self updateTouch:touches active:YES];
+  [super touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+  [self updateTouch:touches active:YES];
+  [super touchesMoved:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+  [self updateTouch:touches active:NO];
+  [super touchesEnded:touches withEvent:event];
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+  [self updateTouch:touches active:NO];
+  [super touchesCancelled:touches withEvent:event];
+}
+
 /** Map the blur radius (dp) onto the closest system material. */
 - (UIBlurEffectStyle)blurStyleFor:(const LiquidGlassViewProps &)p
 {
@@ -241,6 +493,7 @@ NSInteger LGLiveGlassViewCount(void)
   [CATransaction begin];
   [CATransaction setDisableActions:YES];
   _sheenLayer.frame = _effectView.contentView.bounds;
+  [self applyCornerRadius];
   [CATransaction commit];
 }
 
@@ -249,6 +502,14 @@ NSInteger LGLiveGlassViewCount(void)
 - (void)didMoveToWindow
 {
   [super didMoveToWindow];
+  if (self.window) {
+    _forceDraw = YES;
+    [self startDisplayLink];
+  } else {
+    [_displayLink invalidate];
+    _displayLink = nil;
+    _backdrop = nil;
+  }
   if (self.window && !_countedLive) {
     gLiveGlassViews++;
     _countedLive = YES;
@@ -265,6 +526,11 @@ NSInteger LGLiveGlassViewCount(void)
   [super prepareForRecycle];
   _hasAppliedProps = NO;
   _effectView.effect = nil;
+  _wantsShader = NO;
+  _touching = NO;
+  _press = 0;
+  _touchStrength = 0;
+  [self stopShader];
 }
 
 @end

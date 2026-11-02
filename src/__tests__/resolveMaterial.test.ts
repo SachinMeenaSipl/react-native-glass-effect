@@ -1,3 +1,4 @@
+import { stepAdjustment, DEFAULT_GLASS_ADJUSTMENTS } from '../components/GlassAdjuster/adjustments';
 import { MATERIALS } from '../materials/presets';
 import { MAX_BLUR_DP, normalizeAngle, resolveMaterial } from '../materials/resolveMaterial';
 import { __resetWarnings } from '../utils/warnOnce';
@@ -98,5 +99,18 @@ describe('normalizeAngle', () => {
     [NaN, -60],
   ])('%p → %p', (input, out) => {
     expect(normalizeAngle(input)).toBe(out);
+  });
+});
+
+describe('stepAdjustment', () => {
+  it('steps without float noise', () => {
+    expect(stepAdjustment(DEFAULT_GLASS_ADJUSTMENTS, 'refraction', 1).refraction).toBe(0.4);
+  });
+
+  it('stays inside the range', () => {
+    const atMax = { ...DEFAULT_GLASS_ADJUSTMENTS, intensity: 1 };
+    expect(stepAdjustment(atMax, 'intensity', 1).intensity).toBe(1);
+    const atMin = { ...DEFAULT_GLASS_ADJUSTMENTS, chromaticAberration: 0 };
+    expect(stepAdjustment(atMin, 'chromaticAberration', -1).chromaticAberration).toBe(0);
   });
 });

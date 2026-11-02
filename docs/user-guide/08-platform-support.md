@@ -10,15 +10,19 @@
 | Press squish | ✅ native | ✅ native | ✅ native | ✅ system | ✅ JS | ✅ JS | ✅ JS |
 | Tilt lighting | ✅ | ✅ | ✅ | — | — | — | — |
 | Animated prop changes | ✅ | ✅ | ✅ | ✅ effect | ✅ effect | — | — |
-| Needs `<GlassBackdrop>` | yes | yes | yes | no | no | no | no |
+| Needs `<GlassBackdrop>` | yes | yes | yes | no (yes with `iosRenderer="shader"`) | no (yes with `iosRenderer="shader"`) | no | no |
 | Video/maps in TextureView | ✅ | ✅ | — | ✅ | ✅ | — | — |
 | Video/maps in SurfaceView | — | — | — | n/a | n/a | — | — |
 
 "—" means the prop is accepted and ignored, never an error.
 
+## See both platforms
+
+Recordings of the example app with `iosRenderer: 'shader'` in the theme: [Android](../videos/glass-demo-android.mp4) · [iOS](../videos/glass-demo-ios.mp4).
+
 ## Why things look slightly different
 
-iOS uses Apple's own glass; Android uses this library's renderer. They share the same design language (blur, tint, rim light, rounded shape, border), but they are **not pixel-identical**. Tune per platform if you need to:
+By default iOS uses Apple's own glass and Android uses this library's renderer, so they look clearly different: Apple's glass is lighter and paler. For a matching look, use `<FrostedGlass>` (the same shader on both) or `<LiquidGlass>` (Android tuned to match Apple's glass). Or tune per platform:
 
 ```tsx
 <LiquidGlassView blur={Platform.OS === 'android' ? 24 : 20} />

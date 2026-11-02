@@ -10,7 +10,7 @@ A React Native **library** (published to npm) that renders "Liquid Glass" surfac
 
 - **JS/TS layer** (`src/`): public components, materials, theme, capability detection, fallbacks.
 - **Android** (`android/`): the real renderer. It captures the background live, then applies blur, a refraction shader, lighting and touch animation.
-- **iOS** (`ios/`): thin wrapper over the system `UIGlassEffect` / `UIVisualEffectView`.
+- **iOS** (`ios/`): thin wrapper over the system `UIGlassEffect` / `UIVisualEffectView`, plus an optional Metal renderer (`iosRenderer="shader"`).
 - **Example app** (`example/`): manual test bench for every renderer path.
 
 New Architecture (Fabric + TurboModules) only. RN ≥ 0.76, Android minSdk 24, iOS 15.1.
@@ -59,6 +59,7 @@ android/src/main/java/com/liquidglass/
 
 ios/
 ├─ LiquidGlassViewComponentView.{h,mm}   Fabric view
+├─ LGShaderRenderer.{h,mm}               Metal port of the Android shader (iosRenderer="shader")
 └─ LiquidGlassModule.{h,mm}              TurboModule
 
 docs/user-guide/      for app developers

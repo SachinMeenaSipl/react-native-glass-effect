@@ -2,7 +2,7 @@ import type { ColorValue } from 'react-native';
 import type { GlassQuality } from '../quality/types';
 
 /** Built-in material names. */
-export type GlassMaterialName = 'thin' | 'regular' | 'thick' | 'clear';
+export type GlassMaterialName = 'thin' | 'regular' | 'thick' | 'clear' | 'liquid' | 'liquidClear';
 
 /** A colour that can differ between light and dark mode. */
 export type SchemeColor = { light: ColorValue; dark: ColorValue };
@@ -79,6 +79,11 @@ export interface GlassAppearanceProps {
   borderOpacity?: number;
   /** Rendering budget. Default "auto". */
   quality?: GlassQuality;
+  /**
+   * iOS only. 'system' (default) uses Apple's glass. 'shader' uses the library's own
+   * Metal renderer, so iOS looks like Android; it needs a <GlassBackdrop> and costs more.
+   */
+  iosRenderer?: 'system' | 'shader';
   /**
    * Show an opaque surface instead of glass.
    * "auto" (default) follows the iOS "Reduce Transparency" setting.

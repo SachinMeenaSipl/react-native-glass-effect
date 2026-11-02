@@ -86,6 +86,11 @@ class LiquidGlassViewManager : ReactViewManager() {
   @ReactProp(name = "appearance")
   fun setAppearance(view: ReactViewGroup, value: String?) = Unit
 
+  /** iOS only. Android always uses its own renderer. */
+  @Suppress("UNUSED_PARAMETER")
+  @ReactProp(name = "iosRenderer")
+  fun setIosRenderer(view: ReactViewGroup, value: String?) = Unit
+
   @ReactProp(name = "quality")
   fun setQuality(view: ReactViewGroup, value: String?) = edit(view) { pending = pending.copy(quality = QualityMode.from(value)) }
 

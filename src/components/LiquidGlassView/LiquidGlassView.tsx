@@ -69,6 +69,7 @@ export const LiquidGlassView = forwardRef<View, LiquidGlassViewProps>(function L
       motionLighting={glass.motionLighting}
       transitionDuration={glass.transitionDuration}
       clipContent={glass.clipContent}
+      iosRenderer={glass.iosRenderer}
     >
       {children}
     </NativeGlassView>

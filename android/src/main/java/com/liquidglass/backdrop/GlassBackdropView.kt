@@ -37,6 +37,12 @@ import com.facebook.react.views.view.ReactViewGroup
  */
 class GlassBackdropView(context: Context) : ReactViewGroup(context) {
 
+  init {
+    // Without this, Android skips draw() for a ViewGroup that has no background of its own
+    // and calls only dispatchDraw(), so nothing would be recorded into [contentNode].
+    setWillNotDraw(false)
+  }
+
   var backdropId: String = ""
     set(value) {
       if (field != value) {

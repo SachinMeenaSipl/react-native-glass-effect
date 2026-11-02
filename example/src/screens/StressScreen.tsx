@@ -8,6 +8,7 @@ import {
   resetGlassStats,
   type GlassStats,
 } from 'react-native-liquid-glass';
+import { CONTENT_TOP } from '../layout';
 
 /** Per-second glass work, read from the native counters. */
 function useGlassStatsPerSecond(): GlassStats | null {
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   stripes: { flex: 1, flexDirection: 'row', transform: [{ rotate: '20deg' }, { scale: 1.6 }] },
   stripe: { flex: 1 },
-  list: { padding: 16, paddingTop: 80, paddingBottom: 140, gap: 12 },
+  list: { padding: 16, paddingTop: CONTENT_TOP + 56, paddingBottom: 140, gap: 12 },
   card: { height: 90, justifyContent: 'center' },
   text: { fontSize: 18, fontWeight: '700' },
   controls: {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   count: { fontWeight: '800', fontSize: 16, color: '#000' },
   stats: {
-    position: 'absolute', top: 56, left: 8, right: 8, padding: 6,
+    position: 'absolute', top: CONTENT_TOP, left: 8, right: 8, padding: 6,
     borderRadius: 8, backgroundColor: 'rgba(0,0,0,0.65)',
   },
   statsText: { color: '#fff', fontSize: 11, fontVariant: ['tabular-nums'] },

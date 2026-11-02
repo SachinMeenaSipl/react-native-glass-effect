@@ -68,6 +68,8 @@ export interface NativeLiquidGlassViewProps extends ViewProps {
   transitionDuration?: WithDefault<Float, 180>;
   /** Clip children to the rounded shape. */
   clipContent?: WithDefault<boolean, true>;
+  /** iOS: 'system' = Apple's glass, 'shader' = the library's own glass (matches Android). */
+  iosRenderer?: WithDefault<'system' | 'shader', 'system'>;
 }
 
 export default codegenNativeComponent<NativeLiquidGlassViewProps>(

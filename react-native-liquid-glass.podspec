@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/SachinMeenaSipl/react-native-glass-effect.git", :tag => "v#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
-  s.frameworks   = "UIKit", "QuartzCore"
+  s.frameworks   = "UIKit", "QuartzCore", "Metal", "MetalPerformanceShaders"
 
   # Adds React-Core, codegen (RNLiquidGlassSpec) and Fabric dependencies.
   install_modules_dependencies(s)

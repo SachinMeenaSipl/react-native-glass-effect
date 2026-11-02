@@ -16,6 +16,14 @@ iOS already has real glass, so the iOS side is deliberately thin.
 | ≤ 26 | `systemMaterial` |
 | > 26 | `systemThickMaterial` |
 
+## Shader mode (`iosRenderer="shader"`)
+
+`LGShaderRenderer` is the iOS twin of `RenderNodeGlassRenderer`. Each display-link frame it captures the backdrop with `renderInContext` (half resolution when blur ≥ 8px), skips the GPU if the pixels are unchanged, blurs with `MPSImageGaussianBlur`, and runs a Metal port of `GlassShaderSource.kt` that also draws the tint and border. Keep steps 1–7 in sync with the AGSL.
+
+`GlassBackdrop` stays a plain `View`; it carries `nativeID="LiquidGlassBackdrop:<id>"` and glass finds it by walking the window. A backdrop containing the glass is skipped. If Metal or the backdrop is missing, it stays on system glass.
+
+Limits: `renderInContext` runs on the main thread for every glass view, so this mode costs more than system glass and has not been profiled on a real device. It does not capture video or other layers that bypass Core Animation rendering. `transitionDuration` does not animate in this mode, and `motionLighting` is not supported.
+
 ## View structure
 
 ```
@@ -30,7 +38,7 @@ Children are mounted into `_childContainer` (overriding `mountChildComponentView
 
 ## Ignored on iOS (by design)
 
-`refraction`, `distortion`, `chromaticAberration`, `edgeWidth`, `quality`, `motionLighting`, `backdropId`. The system owns those decisions. `GlassBackdrop` renders a plain `View`.
+With the default `iosRenderer="system"`: `refraction`, `distortion`, `chromaticAberration`, `edgeWidth`, `quality`, `motionLighting`, `backdropId`. The system owns those decisions. On iOS 26+ `blur`, `intensity`, `illumination` and `lightAngle` are also ignored.
 
 ## Accessibility
 

@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LiquidGlassCard, useGlassCapabilities } from 'react-native-liquid-glass';
+import { CONTENT_TOP } from '../layout';
 
 /**
  * What the device can do, plus two edge cases that MUST NOT crash:
@@ -30,7 +31,7 @@ export function CapabilitiesScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#E9E4F0' },
-  content: { padding: 16, paddingTop: 80, gap: 12 },
+  content: { padding: 16, paddingTop: CONTENT_TOP, gap: 12 },
   row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 2 },
   key: { fontWeight: '600' },
 });

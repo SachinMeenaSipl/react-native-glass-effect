@@ -30,6 +30,7 @@ export const GLASS_PROP_KEYS = [
   'motionLighting',
   'transitionDuration',
   'clipContent',
+  'iosRenderer',
 ] as const satisfies ReadonlyArray<keyof GlassAppearanceProps>;
 
 export function splitGlassProps<T extends GlassAppearanceProps>(

@@ -5,6 +5,7 @@ import {
   LiquidGlassView,
 } from 'react-native-liquid-glass';
 import { BusyBackground } from '../components/BusyBackground';
+import { CONTENT_TOP } from '../layout';
 
 /**
  * The core proof: dynamic background capture.
@@ -34,7 +35,7 @@ export function ScrollingScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   header: {
-    position: 'absolute', top: 56, left: 16, right: 16,
+    position: 'absolute', top: CONTENT_TOP, left: 16, right: 16,
     height: 64, justifyContent: 'center', paddingHorizontal: 20,
   },
   title: { fontSize: 18, fontWeight: '700' },

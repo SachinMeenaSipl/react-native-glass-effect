@@ -34,6 +34,11 @@ if [ ! -d "$C/sdks" ]; then
    git checkout -q)
 fi
 SDK="$C/sdks/iPhoneOS16.5.sdk"
+# MetalPerformanceShaders keeps its headers in nested sub-frameworks (also adds them to older caches).
+MPS_SUB="$SDK/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks"
+if [ ! -d "$MPS_SUB" ]; then
+  (cd "$C/sdks" && git sparse-checkout add '/iPhoneOS16.5.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/*/Headers/*' >/dev/null && git checkout -q)
+fi
 sparse https://github.com/facebook/folly.git v2024.11.18.00 "$D/folly" '/folly/*'
 sparse https://github.com/fmtlib/fmt.git 11.0.2 "$D/fmt" '/include/*'
 sparse https://github.com/google/double-conversion.git v1.1.6 "$D/double-conversion" '/src/*'
@@ -75,7 +80,7 @@ mkdir -p "$INC/RNLiquidGlassSpec" && cp "$C/codegen/RNLiquidGlassSpec/"* "$INC/R
 RC="$RN/ReactCommon"
 PLAT=$( (find "$RC" -type d -path "*/platform/ios"; find "$RC" -type d -path "*/platform/cxx") | grep -v /tests/ | sed 's/^/-I /' | tr '\n' ' ')
 BOOST=$(for d in "$D"/boost/*/include; do printf -- "-I %s " "$d"; done)
-FLAGS="-fsyntax-only -x objective-c++ -std=c++20 -fobjc-arc -Werror -target arm64-apple-ios15.1 -isysroot $SDK -F $SDK/System/Library/Frameworks
+FLAGS="-fsyntax-only -x objective-c++ -std=c++20 -fobjc-arc -Werror -target arm64-apple-ios15.1 -isysroot $SDK -F $SDK/System/Library/Frameworks -F $MPS_SUB
  -DFOLLY_NO_CONFIG=1 -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_CFG_NO_COROUTINES=1 -DFOLLY_HAVE_CLOCK_GETTIME=1 -DRCT_NEW_ARCH_ENABLED=1
  -I $INC -I $CG -I $RC -I $RN/React -I $RN/ReactApple/Libraries/RCTFoundation -I $RC/jsi -I $RC/callinvoker -I $RC/runtimeexecutor
  -I $RC/yoga -I $RC/react/nativemodule/core -I $RC/jsiexecutor -I $RC/cxxreact $PLAT

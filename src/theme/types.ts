@@ -10,6 +10,11 @@ export interface GlassTheme {
   cornerRadius: number;
   /** Force a colour scheme, or follow the system. */
   colorScheme: 'auto' | 'light' | 'dark';
+  /**
+   * iOS renderer for every glass that doesn't set `iosRenderer`. 'system' is Apple's glass.
+   * 'shader' makes all glass, including buttons and cards, look like Android.
+   */
+  iosRenderer: 'system' | 'shader';
   /** Per-material overrides, merged on top of the built-in presets. */
   materials: Partial<Record<GlassMaterialName, Partial<GlassMaterial>>>;
 }

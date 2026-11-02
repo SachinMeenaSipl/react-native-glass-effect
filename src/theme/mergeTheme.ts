@@ -16,6 +16,7 @@ export function mergeTheme(parent: GlassTheme, child?: GlassThemeOverrides): Gla
     defaultQuality: child.defaultQuality ?? parent.defaultQuality,
     cornerRadius: child.cornerRadius ?? parent.cornerRadius,
     colorScheme: child.colorScheme ?? parent.colorScheme,
+    iosRenderer: child.iosRenderer ?? parent.iosRenderer,
     materials,
   };
 }

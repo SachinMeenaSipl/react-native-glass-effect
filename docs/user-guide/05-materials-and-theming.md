@@ -8,6 +8,8 @@
 | `regular` | 20 | 14% / 28% | 0.35 | Classic glass | Headers, cards, buttons (default) |
 | `thick` | 36 | 28% / 45% | 0.30 | Milky, very readable | Sheets, menus, text-heavy panels |
 | `clear` | 4 | 4% / 8% | 0.50 | A lens, almost no frost | Small controls over busy media |
+| `liquid` | 4 | 60% / 50% | 1.00 | Apple-style Liquid Glass | Used by `<LiquidGlass>` |
+| `liquidClear` | 0 | 20% / 25% | 1.00 | Apple-style clear lens | Used by `<LiquidGlass variant="clear">` |
 
 ## Override one value
 

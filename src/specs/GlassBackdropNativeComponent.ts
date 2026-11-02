@@ -6,9 +6,9 @@
  * refracted, behind their own content. That is how Android glass "sees" what
  * is behind it.
  *
- * iOS does not need this: UIVisualEffectView samples the screen itself.
- * On iOS the JS component renders a plain <View>, so this native component is
- * excluded from iOS codegen.
+ * On iOS the JS component renders a plain <View> with a marker nativeID, so this
+ * native component is excluded from iOS codegen. System glass samples the screen
+ * itself; iosRenderer="shader" finds the marked view natively.
  */
 import type { HostComponent, ViewProps } from 'react-native';
 import type { WithDefault } from 'react-native/Libraries/Types/CodegenTypes';

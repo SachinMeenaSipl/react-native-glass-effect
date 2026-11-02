@@ -1,9 +1,10 @@
 # Example app
 
-Five screens that exercise every renderer path and edge case.
+Six screens that exercise every renderer path and edge case.
 
 | Screen    | What to check                                                                 |
 |-----------|-------------------------------------------------------------------------------|
+| Types     | LiquidGlass, FrostedGlass and GlassAdjuster: both platforms should look alike. |
 | Scroll    | Header + buttons blur the list **live** while scrolling. No one-frame lag.    |
 | Materials | thin / regular / thick / clear look clearly different.                        |
 | Play      | Change every knob; changes animate. Touch the lens: light follows the finger. |

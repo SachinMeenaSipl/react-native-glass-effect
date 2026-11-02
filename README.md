@@ -3,7 +3,7 @@
 Liquid Glass surfaces for React Native: real, live background blur with edge refraction, rim lighting and touch response.
 
 - **Android is first-class.** GPU blur and an AGSL refraction shader on Android 13+, GPU blur on Android 12, and an automatic snapshot fallback on Android 7–11.
-- **iOS uses the system.** iOS 26+ gets Apple's own `UIGlassEffect`; iOS 15–25 gets native materials.
+- **iOS uses the system by default.** iOS 26+ gets Apple's own `UIGlassEffect`; iOS 15–25 gets native materials. `iosRenderer="shader"` switches to the library's Metal renderer to match Android.
 - **One API everywhere.** You write `<LiquidGlassView>` and the library picks the best renderer for each device.
 
 ```tsx
@@ -22,7 +22,15 @@ import { GlassBackdrop, LiquidGlassView } from 'react-native-liquid-glass-native
 
 ![Glass materials rendered by the Android shader pipeline](docs/images/shader-preview.png)
 
-*Rendered by the library's own shader pipeline through Skia (`npm run preview:shader`): regular, thin, thick, clear (refraction + RGB split) and a pressed pill with touch light.*
+*Rendered by the library's own shader pipeline through Skia (`npm run preview:shader`): regular, thin, thick, clear (refraction + RGB split) and a pressed pill with touch light. This is the Android and `<FrostedGlass>` look; default iOS glass is Apple's own and looks different.*
+
+## See it running
+
+Real recordings of the example app. The Android and iOS demos run the same script with `iosRenderer: 'shader'` set in the theme. Click a preview for the full video.
+
+| Android | iOS |
+|---|---|
+| [![Glass demo on Android](https://raw.githubusercontent.com/SachinMeenaSipl/react-native-glass-effect/v0.2.0/docs/videos/glass-demo-android.gif)](https://raw.githubusercontent.com/SachinMeenaSipl/react-native-glass-effect/v0.2.0/docs/videos/glass-demo-android.mp4) | [![Glass demo on iOS](https://raw.githubusercontent.com/SachinMeenaSipl/react-native-glass-effect/v0.2.0/docs/videos/glass-demo-ios.gif)](https://raw.githubusercontent.com/SachinMeenaSipl/react-native-glass-effect/v0.2.0/docs/videos/glass-demo-ios.mp4) |
 
 ## Install
 
@@ -61,6 +69,9 @@ iOS doesn't need the backdrop, but keeping it makes the same code work on both p
 
 | Component | Use it for |
 |---|---|
+| `LiquidGlass` | Apple-style Liquid Glass on Android and iOS. |
+| `FrostedGlass` | The library's own glass, drawn the same way on Android and iOS. |
+| `GlassAdjuster` | Ready-made panel to tune glass live. |
 | `LiquidGlassView` | Any glass surface. Everything else is built from it. |
 | `GlassBackdrop` | Wraps the content that glass should see through. |
 | `LiquidGlassButton` | Pill button with press feedback. |

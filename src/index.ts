@@ -10,6 +10,12 @@ export {
   GlassBackdrop,
   LiquidGlassButton,
   LiquidGlassCard,
+  LiquidGlass,
+  FrostedGlass,
+  GlassAdjuster,
+  ADJUSTMENT_RANGES,
+  DEFAULT_GLASS_ADJUSTMENTS,
+  stepAdjustment,
 } from './components';
 export type {
   LiquidGlassViewProps,
@@ -17,6 +23,11 @@ export type {
   LiquidGlassButtonProps,
   GlassButtonSize,
   LiquidGlassCardProps,
+  LiquidGlassProps,
+  FrostedGlassProps,
+  GlassAdjusterProps,
+  GlassAdjustmentKey,
+  GlassAdjustments,
 } from './components';
 
 // Materials

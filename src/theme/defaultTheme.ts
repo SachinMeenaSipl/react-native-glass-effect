@@ -5,5 +5,6 @@ export const defaultTheme: GlassTheme = {
   defaultQuality: 'auto',
   cornerRadius: 24,
   colorScheme: 'auto',
+  iosRenderer: 'system',
   materials: {},
 };

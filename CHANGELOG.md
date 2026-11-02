@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0
+
+- Fix (Android): glass never sampled its backdrop, so it drew a milky solid surface instead of blur and refraction
+- Fix (iOS): a `cornerRadius` above half the shortest side drew a broken shape
+- New: `<LiquidGlass>` Apple-style glass on both platforms, with `liquid` and `liquidClear` materials
+- New: `<FrostedGlass>` the same shader on Android and iOS
+- New: `iosRenderer="shader"` Metal renderer for iOS; `"system"` stays the default
+- New: theme `iosRenderer` switches every glass on iOS at once, including buttons and cards
+- New: `<GlassAdjuster>` live tuning panel, plus `DEFAULT_GLASS_ADJUSTMENTS` and `stepAdjustment`
+- Docs: list which props have no effect on iOS 26 system glass
+- Docs: demo videos for Android and iOS
+- Example: full-screen Types screen; tab selector no longer overlaps content
+
 ## 0.1.0 — first public version
 
 - `LiquidGlassView`, `GlassBackdrop`, `LiquidGlassButton`, `LiquidGlassCard`

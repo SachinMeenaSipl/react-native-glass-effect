@@ -29,8 +29,44 @@ Accepts **all `<View>` props** (style, children, onLayout, pointerEvents, access
 | `backdropId` | string | — | Sample a specific `<GlassBackdrop backdropId>` | ✅ | — |
 | `clipContent` | boolean | `true` | Clip children to the rounded shape | ✅ | ✅ |
 | `pressed` | boolean | `false` | Advanced: force the pressed highlight | ✅ | ✅ |
+| `iosRenderer` | `'system' \| 'shader'` | `'system'` | `system` = Apple's glass. `shader` = the library's own glass, matching Android; every prop then works on iOS, a `<GlassBackdrop>` is required, and it costs more | ignored | ✅ |
+
+**With the default `iosRenderer="system"` on iOS 26+**, Apple draws the glass, so `blur`, `intensity`, `illumination` and `lightAngle` have no effect, and `thin`, `regular` and `thick` differ only by tint.
 
 > Don't set `backgroundColor` on glass; use `tint`. A background colour is drawn **under** the blur and won't be visible.
+
+## `<LiquidGlass>`
+
+Apple-style Liquid Glass on both platforms. iOS uses Apple's glass; Android uses the shader, tuned to match it (close, not pixel-identical).
+
+Takes all `LiquidGlassView` props except `material`, plus:
+
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| `variant` | `'regular' \| 'clear'` | `'regular'` | Everyday glass, or a see-through lens |
+
+## `<FrostedGlass>`
+
+The library's own glass, drawn by the same shader on Android and iOS, so both look alike and every prop works on both. Takes all `LiquidGlassView` props except `iosRenderer`. Needs a `<GlassBackdrop>`.
+
+## `<GlassAdjuster>`
+
+A ready-made panel of +/- controls. Spread the same values onto any glass:
+
+```tsx
+const [look, setLook] = useState(DEFAULT_GLASS_ADJUSTMENTS);
+
+<FrostedGlass {...look} style={styles.card} />
+<GlassAdjuster value={look} onChange={setLook} controls={['blur', 'tintOpacity', 'refraction']} />
+```
+
+| Prop | Type | Default | What it does |
+|---|---|---|---|
+| `value` | `GlassAdjustments` | — | Current values |
+| `onChange` | function | — | Receives the full new object |
+| `controls` | array of keys | all | Which rows to show, in order |
+| `defaults` | `GlassAdjustments` | `DEFAULT_GLASS_ADJUSTMENTS` | What Reset restores |
+| `style` | ViewStyle | — | Outer style |
 
 ## `<GlassBackdrop>`
 
@@ -67,6 +103,7 @@ Defaults that differ from `LiquidGlassView`: `interactive = true`, and `cornerRa
   defaultQuality: 'auto',
   cornerRadius: 24,
   colorScheme: 'auto',         // 'light' | 'dark' to force
+  iosRenderer: 'system',       // 'shader' = all glass on iOS looks like Android
   materials: { regular: { blur: 24, tintOpacity: { light: 0.2, dark: 0.3 } } },
 }}>
 ```

@@ -18,6 +18,7 @@ export interface ResolvedGlassProps extends ResolvedGlass {
   motionLighting: boolean;
   transitionDuration: number;
   clipContent: boolean;
+  iosRenderer: 'system' | 'shader';
 }
 
 /**
@@ -37,7 +38,7 @@ export function useResolvedGlass(
     material, intensity, blur, tint, tintOpacity, refraction, distortion,
     illumination, lightAngle, chromaticAberration, edgeWidth, borderWidth,
     borderOpacity, fallbackColor, cornerRadius, quality, reduceTransparency,
-    backdropId, interactive, motionLighting, transitionDuration, clipContent,
+    backdropId, interactive, motionLighting, transitionDuration, clipContent, iosRenderer,
   } = props;
 
   const resolved = useMemo(
@@ -73,5 +74,6 @@ export function useResolvedGlass(
     motionLighting: motionLighting ?? false,
     transitionDuration: clamp(transitionDuration, 0, 2000, 180),
     clipContent: clipContent ?? true,
+    iosRenderer: iosRenderer ?? theme.iosRenderer,
   };
 }

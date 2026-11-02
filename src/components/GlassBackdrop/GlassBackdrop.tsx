@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { View, type ViewProps } from 'react-native';
+import { Platform, View, type ViewProps } from 'react-native';
 import { NativeBackdrop } from '../../native/nativeBridge';
 
 export interface GlassBackdropProps extends ViewProps {
@@ -24,8 +24,8 @@ export interface GlassBackdropProps extends ViewProps {
  * </View>
  * ```
  *
- * On iOS and web this is a plain <View> (those platforms blur the screen directly),
- * so the same code works everywhere.
+ * On iOS and web this is a plain <View>, so the same code works everywhere. On iOS it
+ * also carries a marker that `iosRenderer="shader"` glass uses to find it natively.
  */
 export const GlassBackdrop = forwardRef<View, GlassBackdropProps>(function GlassBackdrop(
   { backdropId, ...props },
@@ -34,7 +34,8 @@ export const GlassBackdrop = forwardRef<View, GlassBackdropProps>(function Glass
   if (NativeBackdrop) {
     return <NativeBackdrop ref={ref as never} backdropId={backdropId ?? ''} {...props} />;
   }
-  return <View ref={ref} collapsable={false} {...props} />;
+  const marker = Platform.OS === 'ios' ? `LiquidGlassBackdrop:${backdropId ?? ''}` : undefined;
+  return <View ref={ref} collapsable={false} nativeID={marker} {...props} />;
 });
 
 GlassBackdrop.displayName = 'GlassBackdrop';
