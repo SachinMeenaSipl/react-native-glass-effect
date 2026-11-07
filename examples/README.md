@@ -34,6 +34,18 @@ Without the secrets the APK is still built and published; only the email is skip
 
 The APK is built for `arm64-v8a`, which covers practically every Android phone since 2017. It's signed with the debug key from the Expo template, so it installs on any phone and each build installs over the previous one; it's not meant for the Play Store.
 
+### Building with Codemagic instead
+
+`codemagic.yaml` (repo root) does the same build on [Codemagic](https://codemagic.io), outside GitHub Actions: a push to `main` or a `v*` tag builds the release APK, and Codemagic emails a download link itself (no SMTP setup). The free plan includes 500 build minutes a month.
+
+One-time setup:
+
+1. Sign in at codemagic.io with GitHub and add this repository (choose the `codemagic.yaml` configuration).
+2. Put your address under `publishing.email.recipients` in `codemagic.yaml`.
+3. In the app's settings on Codemagic, open **Webhooks** and add the webhook to the repository, so pushes and tags start builds.
+
+Email download links expire after 24 hours by default (Codemagic settings → Artifact download links).
+
 ## Windows: Android build fails with `ninja: ... No such file or directory`
 
 Windows limits paths to 260 characters. CMake's object paths repeat the full project path, so a project under a long folder (for example OneDrive) can exceed the limit. Either:
