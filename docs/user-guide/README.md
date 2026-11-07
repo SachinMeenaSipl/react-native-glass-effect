@@ -12,3 +12,4 @@
 | 8 | [Platform support](08-platform-support.md) | What looks different where |
 | 9 | [Recipes](09-recipes.md) | Header, tab bar, cards over images, modals… |
 | 10 | [Troubleshooting](10-troubleshooting.md) | Something looks wrong |
+| 11 | [Expo and web](11-expo-and-web.md) | You use Expo, Expo web, Vite or Next.js |

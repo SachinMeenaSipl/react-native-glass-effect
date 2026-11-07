@@ -1,9 +1,11 @@
 # react-native-liquid-glass-native
 
-Liquid Glass surfaces for React Native: real, live background blur with edge refraction, rim lighting and touch response.
+Liquid Glass surfaces for React Native, Expo and the web: real, live background blur with edge refraction, rim lighting and touch response.
 
 - **Android is first-class.** GPU blur and an AGSL refraction shader on Android 13+, GPU blur on Android 12, and an automatic snapshot fallback on Android 7–11.
 - **iOS uses the system by default.** iOS 26+ gets Apple's own `UIGlassEffect`; iOS 15–25 gets native materials. `iosRenderer="shader"` switches to the library's Metal renderer to match Android.
+- **Expo works.** Expo dev builds and EAS builds get the full native glass. No config plugin needed.
+- **Web works.** React, Vite, Next.js (with server-side rendering) and Expo web get glass through CSS `backdrop-filter`.
 - **One API everywhere.** You write `<LiquidGlassView>` and the library picks the best renderer for each device.
 
 ```tsx
@@ -39,7 +41,24 @@ npm install react-native-liquid-glass-native
 cd ios && pod install
 ```
 
-Then rebuild the app. It works in any app on the New Architecture (the default since RN 0.76), including Expo dev builds. **Expo Go is not supported**; there it falls back to a plain view instead of crashing.
+Then rebuild the app. It works in any app on the New Architecture (the default since RN 0.76).
+
+### Expo
+
+```sh
+npx expo install react-native-liquid-glass-native
+npx expo run:android   # or: npx expo run:ios
+```
+
+Works in Expo dev builds and EAS builds. **Expo Go can't load third-party native code**, so there the components fall back to a plain tinted view instead of crashing.
+
+### Web
+
+```sh
+npm install react-native-liquid-glass-native react-native-web react-dom
+```
+
+Alias `react-native` to `react-native-web` in your bundler. Setup for Vite, Next.js and Expo web: [Expo and web](docs/user-guide/11-expo-and-web.md).
 
 ## The one rule
 
@@ -63,7 +82,10 @@ iOS doesn't need the backdrop, but keeping it makes the same code work on both p
 | Android 7–11 | `compat` | ✅ snapshot, throttled | — | ✅ approximated | ✅ |
 | iOS 26+ | `system-glass` | ✅ system | ✅ system | ✅ system | ✅ system |
 | iOS 15–25 | `system-material` | ✅ system | — | ✅ approximated | JS scale |
-| Expo Go / web / tests | `fallback` | web: CSS `backdrop-filter` | — | — | — |
+| Web (React, Vite, Next.js, Expo web) | `fallback` | ✅ CSS `backdrop-filter` | — | — | — |
+| Expo Go / tests | `fallback` | — (plain tinted view) | — | — | — |
+
+Expo dev builds use the Android and iOS renderers above.
 
 ## Components
 
@@ -78,11 +100,21 @@ iOS doesn't need the backdrop, but keeping it makes the same code work on both p
 | `LiquidGlassCard` | Padded glass container. |
 | `GlassThemeProvider` | App-wide defaults (material, quality, radius, overrides). |
 
+## Examples
+
+| Folder | Shows |
+|---|---|
+| [`example/`](example) | React Native CLI app for Android and iOS: every renderer path |
+| [`examples/liquid-glass-expo/`](examples/liquid-glass-expo) | Expo app: Android, iOS and Expo web |
+| [`examples/web-vite/`](examples/web-vite) | React web app with Vite |
+| [`examples/next-app/`](examples/next-app) | Next.js app with server-side rendering |
+
 ## Documentation
 
 | For | Read |
 |---|---|
 | App developers | [User guide](docs/user-guide/README.md): install, concepts, every prop, recipes, troubleshooting |
+| Expo and web apps | [Expo and web](docs/user-guide/11-expo-and-web.md): Expo dev builds, Expo web, Vite, Next.js |
 | Contributors and AI agents | [AGENTS.md](AGENTS.md) and [architecture docs](docs/architecture/README.md) |
 | Every edge case and how it's handled | [docs/architecture/05-edge-cases.md](docs/architecture/05-edge-cases.md) |
 

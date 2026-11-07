@@ -20,5 +20,10 @@ First step on Android: `adb logcat -s LiquidGlass`. Most problems print a one-li
 | Shader never shows on one device model | GPU driver rejected the shader; app fell back to blur | Nothing to do; it's automatic. Report the device model |
 | Squish/transitions don't animate | System "Remove animations" / Reduce Motion is on | Expected (accessibility) |
 | Glass looks different on iOS vs Android | iOS uses Apple's glass | Tune per platform, see [Platform support](08-platform-support.md) |
+| Expo Go shows a plain tinted box, no blur | Expo Go can't load third-party native code | Use a dev build: `npx expo run:android` / `run:ios`, or EAS Build |
+| Web build fails: `Could not load react-native/Libraries/...` | `react-native` isn't aliased to `react-native-web` | Add the alias, see [Expo and web](11-expo-and-web.md) |
+| Web: `global is not defined` in the browser (Vite) | A dependency expects Node's `global` | Add `define: { global: 'globalThis' }` to `vite.config.js` |
+| Web: `Invalid hook call` | Two copies of React (common with linked packages) | Vite: `resolve.dedupe: ['react', 'react-dom', 'react-native-web']` |
+| Windows, Android build: `ninja: error: mkdir(...): No such file or directory` | Path longer than 260 characters (project in a deep folder such as OneDrive) | Enable Windows long paths, or set a short CMake `buildStagingDirectory`. See [examples/README.md](../../examples/README.md) |
 
 Still stuck? Open an issue with: RN version, device + Android/iOS version, `useGlassCapabilities()` output, and the `LiquidGlass` logcat lines.

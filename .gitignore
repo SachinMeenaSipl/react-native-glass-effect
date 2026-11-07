@@ -13,3 +13,10 @@ tools/shader-preview/node_modules/
 tools/shader-preview/preview.png
 tools/shader-preview/preview-black.png
 tools/ios-typecheck/.cache/
+
+# Example apps: generated output
+examples/*/.next/
+examples/*/dist/
+examples/*/.expo/
+examples/*/android/
+examples/*/ios/

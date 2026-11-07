@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- New: Expo support documented and verified (Expo SDK 58 dev build; Expo Go uses the plain-view fallback)
+- New: web support (React, Vite, Next.js with SSR, Expo web). Web bundles resolve a web build through the `browser` and `node` export conditions, so native component specs are never bundled for the web
+- New: `react-native-web` is an optional peer dependency
+- Build: `npm run prepare` also writes `lib/web` (`scripts/build-web.js`)
+- Docs: new user-guide page 11, Expo and web
+
 ## 0.2.0
 
 - Fix (Android): glass never sampled its backdrop, so it drew a milky solid surface instead of blur and refraction

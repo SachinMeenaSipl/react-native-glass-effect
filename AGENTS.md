@@ -12,6 +12,8 @@ A React Native **library** (published to npm) that renders "Liquid Glass" surfac
 - **Android** (`android/`): the real renderer. It captures the background live, then applies blur, a refraction shader, lighting and touch animation.
 - **iOS** (`ios/`): thin wrapper over the system `UIGlassEffect` / `UIVisualEffectView`, plus an optional Metal renderer (`iosRenderer="shader"`).
 - **Example app** (`example/`): manual test bench for every renderer path.
+- **Expo and web examples** (`examples/`): Expo app (Android, iOS, web), Vite web app, Next.js app. See `examples/README.md`.
+- **Web build** (`lib/web/`): written by `scripts/build-web.js` during `npm run prepare`. Same as `lib/module/` with the native bridge replaced by `nativeBridge.web`. Selected through the `browser` and `node` export conditions.
 
 New Architecture (Fabric + TurboModules) only. RN ≥ 0.76, Android minSdk 24, iOS 15.1.
 

@@ -16,6 +16,8 @@
 
 "—" means the prop is accepted and ignored, never an error.
 
+**Expo dev builds** use the Android and iOS columns. **Web** covers React (Vite), Next.js (including server-side rendering) and Expo web. Setup: [Expo and web](11-expo-and-web.md).
+
 ## See both platforms
 
 Recordings of the example app with `iosRenderer: 'shader'` in the theme: [Android](../videos/glass-demo-android.mp4) · [iOS](../videos/glass-demo-ios.mp4).
