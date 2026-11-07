@@ -3,37 +3,30 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlassBackdrop, LiquidGlassView } from 'react-native-liquid-glass-native';
 import { Background } from '../Background';
 
-const TABS = [
-  { key: 'home', icon: '⌂', label: 'Home' },
-  { key: 'search', icon: '⌕', label: 'Search' },
-  { key: 'library', icon: '♫', label: 'Library' },
-  { key: 'profile', icon: '☺', label: 'Profile' },
-];
-
-const BOTTOM = 24; // In a real app: useSafeAreaInsets().bottom + 8
+const TABS = ['Listen', 'Browse', 'Radio', 'Library'];
+const BOTTOM = 28; // In a real app: useSafeAreaInsets().bottom + 8
 
 export default function RecipeTabBar() {
-  const [active, setActive] = useState('home');
+  const [active, setActive] = useState('Listen');
 
   return (
     <View style={styles.screen}>
       <GlassBackdrop style={StyleSheet.absoluteFill}>
-        <Background label={TABS.find((t) => t.key === active)?.label} />
+        <Background topInset={56} />
       </GlassBackdrop>
 
-      <LiquidGlassView material="thick" cornerRadius={32} interactive style={styles.bar}>
+      <LiquidGlassView material="thick" cornerRadius={34} interactive style={styles.bar}>
         {TABS.map((tab) => {
-          const selected = tab.key === active;
+          const selected = tab === active;
           return (
             <Pressable
-              key={tab.key}
-              onPress={() => setActive(tab.key)}
+              key={tab}
+              onPress={() => setActive(tab)}
               accessibilityRole="tab"
               accessibilityState={{ selected }}
-              style={styles.tab}
+              style={[styles.tab, selected && styles.tabSelected]}
             >
-              <Text style={[styles.icon, selected && styles.selected]}>{tab.icon}</Text>
-              <Text style={[styles.label, selected && styles.selected]}>{tab.label}</Text>
+              <Text style={[styles.label, selected && styles.labelSelected]}>{tab}</Text>
             </Pressable>
           );
         })}
@@ -43,19 +36,19 @@ export default function RecipeTabBar() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0b0b14' },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
   bar: {
     position: 'absolute',
     bottom: BOTTOM,
     left: 16,
     right: 16,
-    height: 64,
+    height: 68,
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
+    paddingHorizontal: 6,
   },
-  tab: { alignItems: 'center', paddingHorizontal: 8, paddingVertical: 4 },
-  icon: { color: 'rgba(255,255,255,0.7)', fontSize: 20 },
-  label: { color: 'rgba(255,255,255,0.7)', fontSize: 11, marginTop: 2 },
-  selected: { color: '#ffffff', fontWeight: '700' },
+  tab: { flex: 1, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },
+  tabSelected: { backgroundColor: 'rgba(255,255,255,0.2)' },
+  label: { color: 'rgba(255,255,255,0.75)', fontSize: 14, fontWeight: '600' },
+  labelSelected: { color: '#fff', fontWeight: '800' },
 });

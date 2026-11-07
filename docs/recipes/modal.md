@@ -4,7 +4,7 @@ A glass sheet inside a React Native `Modal`.
 
 <Preview id="recipe-modal" />
 
-In the live web preview, press **Open sheet**. The Android capture shows the sheet already open.
+In the live web preview, press **Share**. The Android capture shows the sheet already open.
 
 ## Code
 

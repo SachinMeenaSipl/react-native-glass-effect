@@ -13,7 +13,8 @@ A floating bottom tab bar with a selected state, accessibility roles and touch l
 - The screen content is in the backdrop. The bar floats on top with `position: 'absolute'`.
 - `interactive` makes the light follow the finger across the bar on Android, and enables Apple's interactive glass on iOS 26.
 - Each tab is a `Pressable` with `accessibilityRole="tab"` and `accessibilityState={{ selected }}`, so screen readers announce it correctly.
-- `material="thick"` keeps icons and labels readable over any content.
+- `material="thick"` keeps the labels readable over any content.
+- The selected tab gets a lighter capsule behind it, a plain `View` with a translucent white background inside the glass.
 
 ## With React Navigation
 

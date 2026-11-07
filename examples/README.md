@@ -10,6 +10,30 @@ Each app links the library from the repository root (`file:../..`). Run `npm run
 
 On Windows, Next.js (Turbopack) can't follow the folder link npm creates. For `next-app`, run `npm pack` in the repo root and install the `.tgz` file instead.
 
+## Example APK (CI)
+
+`.github/workflows/example-apk.yml` builds the Expo example as a release APK (JavaScript bundled in, so it runs without a dev server) and publishes it:
+
+| When | Where the APK goes |
+|---|---|
+| A push to `main` that changes the library or the example | The rolling pre-release **example-latest**, replaced on every build |
+| A version tag such as `v0.3.0` | A release named after the tag |
+| Manually (Actions → Example APK → Run workflow) | **example-latest** |
+
+Each build also emails a download link when these repository secrets are set (Settings → Secrets and variables → Actions):
+
+| Secret | Example |
+|---|---|
+| `SMTP_SERVER` | `smtp.gmail.com` |
+| `SMTP_PORT` | `465` (TLS) or `587` (STARTTLS) |
+| `SMTP_USERNAME` | the account that sends, e.g. `you@gmail.com` |
+| `SMTP_PASSWORD` | for Gmail, an [app password](https://myaccount.google.com/apppasswords), not your normal password |
+| `MAIL_TO` | one or more addresses, comma-separated |
+
+Without the secrets the APK is still built and published; only the email is skipped.
+
+The APK is built for `arm64-v8a`, which covers practically every Android phone since 2017. It's signed with the debug key from the Expo template, so it installs on any phone and each build installs over the previous one; it's not meant for the Play Store.
+
 ## Windows: Android build fails with `ninja: ... No such file or directory`
 
 Windows limits paths to 260 characters. CMake's object paths repeat the full project path, so a project under a long folder (for example OneDrive) can exceed the limit. Either:

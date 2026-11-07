@@ -6,8 +6,8 @@ hero:
   text: Real glass for React Native, Expo and the web
   tagline: Live background blur, edge refraction, rim lighting and touch response. One API on Android, iOS and the browser.
   image:
-    src: /images/shader-preview.png
-    alt: Glass materials rendered by the library's shader
+    src: /previews/android/interaction.jpg
+    alt: Glass tiles on Android, bending the artwork behind them
   actions:
     - theme: brand
       text: Get started

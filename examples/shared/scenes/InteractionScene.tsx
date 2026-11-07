@@ -1,41 +1,56 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlassBackdrop, LiquidGlassView } from 'react-native-liquid-glass-native';
+import { ART } from '../assets';
 import { Background } from '../Background';
+import { AppIcon, Eyebrow, PauseIcon, text } from '../ui';
 
+/** A control centre: tiles that react to touch, tilt, and animate between looks. */
 export default function InteractionScene() {
-  const [expanded, setExpanded] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   return (
     <View style={styles.screen}>
       <GlassBackdrop style={StyleSheet.absoluteFill}>
-        <Background />
+        <Background topInset={40} />
       </GlassBackdrop>
 
-      <View style={styles.stack} pointerEvents="box-none">
-        {/* Android: a light follows the finger and the surface squishes and springs back.
+      <View style={styles.grid} pointerEvents="box-none">
+        {/* Android: a light follows the finger and the tile squishes and springs back.
             iOS 26+: Apple's interactive glass. */}
-        <LiquidGlassView interactive style={styles.panel}>
-          <Text style={styles.title}>interactive</Text>
-          <Text style={styles.body}>Press and drag your finger across me</Text>
+        <LiquidGlassView interactive style={styles.tile}>
+          <Eyebrow>interactive</Eyebrow>
+          <Text style={text.title}>Wi-Fi</Text>
+          <Text style={text.caption}>Studio 5G</Text>
+        </LiquidGlassView>
+        <LiquidGlassView interactive style={styles.tile}>
+          <Eyebrow>interactive</Eyebrow>
+          <Text style={text.title}>Bluetooth</Text>
+          <Text style={text.caption}>AirWaves Pro</Text>
         </LiquidGlassView>
 
         {/* Android: the rim light follows device tilt (uses the gyroscope). */}
-        <LiquidGlassView material="clear" interactive motionLighting style={styles.panel}>
-          <Text style={styles.title}>motionLighting</Text>
-          <Text style={styles.body}>Tilt the phone</Text>
+        <LiquidGlassView material="clear" interactive motionLighting style={styles.wide}>
+          <AppIcon image={ART[5].image} size={54} />
+          <View style={styles.flex}>
+            <Eyebrow>motionLighting · tilt the phone</Eyebrow>
+            <Text style={text.title}>Prism</Text>
+            <Text style={text.caption}>Kite Theory</Text>
+          </View>
+          <PauseIcon size={22} />
         </LiquidGlassView>
 
         {/* Prop changes animate natively over transitionDuration (ms). */}
-        <Pressable onPress={() => setExpanded((v) => !v)}>
+        <Pressable style={styles.widePress} onPress={() => setFocus((v) => !v)}>
           <LiquidGlassView
-            material={expanded ? 'thick' : 'thin'}
-            tintOpacity={expanded ? 0.4 : 0.08}
+            material={focus ? 'thick' : 'thin'}
+            tint={focus ? '#7c5cff' : '#ffffff'}
+            tintOpacity={focus ? 0.45 : 0.08}
             transitionDuration={300}
-            style={styles.panel}
+            style={styles.focus}
           >
-            <Text style={styles.title}>Tap to switch material</Text>
-            <Text style={styles.body}>{expanded ? 'thick' : 'thin'} · animates over 300 ms</Text>
+            <Eyebrow>transitionDuration 300 · tap me</Eyebrow>
+            <Text style={text.title}>Focus {focus ? 'on' : 'off'}</Text>
           </LiquidGlassView>
         </Pressable>
       </View>
@@ -44,9 +59,11 @@ export default function InteractionScene() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0b0b14' },
-  stack: { flex: 1, justifyContent: 'center', padding: 16, gap: 16 },
-  panel: { padding: 18 },
-  title: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  body: { color: '#fff', fontSize: 14, marginTop: 4 },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
+  grid: { flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignContent: 'center', padding: 14, gap: 14 },
+  tile: { width: '47%', height: 132, padding: 16, justifyContent: 'flex-end' },
+  wide: { width: '100%', flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16 },
+  widePress: { width: '100%' },
+  focus: { padding: 18 },
+  flex: { flex: 1 },
 });

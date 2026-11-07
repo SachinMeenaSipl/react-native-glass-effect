@@ -6,7 +6,7 @@ This page puts glass on screen in five minutes. It assumes you've installed the 
 
 ## Step 1: a background to blur
 
-Glass needs something behind it. In the examples on this site, that's `Background`: a scrollable list of coloured bands. Use your own content in a real app: an image, a list, a map.
+Glass needs something behind it. In the examples on this site, that's `Background`: a scrolling feed of artwork over a wallpaper (the images live in `examples/shared/assets`). Use your own content in a real app: photos, a list, a map.
 
 <<< @/../examples/shared/Background.tsx
 
@@ -38,7 +38,7 @@ npm run dev
 
 :::
 
-Scroll the bands: the header and button blur them live.
+Scroll the feed: the header and button blur it live.
 
 ## Step 4: check the renderer
 

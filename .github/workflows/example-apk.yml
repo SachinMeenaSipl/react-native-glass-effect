@@ -1,0 +1,170 @@
+name: Example APK
+
+# Builds the Expo example app (examples/liquid-glass-expo) as an installable release APK,
+# publishes it on a GitHub Release, and emails a download link.
+#
+#   push to main  -> rolling pre-release "example-latest" (replaced on every build)
+#   tag v*        -> release named after the tag, e.g. v0.3.0
+#   manual run    -> same as a push to main
+#
+# Email needs these repository secrets (Settings -> Secrets and variables -> Actions):
+#   SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, MAIL_TO
+# Without them the APK is still built and published; only the email is skipped.
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths:
+      - 'src/**'
+      - 'android/**'
+      - 'ios/**'
+      - 'examples/shared/**'
+      - 'examples/liquid-glass-expo/**'
+      - 'package.json'
+      - '.github/workflows/example-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: example-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      APP_DIR: examples/liquid-glass-expo
+      IS_TAG: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+
+      - name: Release name and version
+        id: meta
+        run: |
+          LIB_VERSION=$(node -p "require('./package.json').version")
+          if [ "$IS_TAG" = "true" ]; then
+            TAG="${GITHUB_REF_NAME}"
+            VERSION="${GITHUB_REF_NAME#v}"
+            TITLE="Example app ${GITHUB_REF_NAME}"
+          else
+            TAG="example-latest"
+            VERSION="${LIB_VERSION}-build.${GITHUB_RUN_NUMBER}"
+            TITLE="Example app (latest main, build ${GITHUB_RUN_NUMBER})"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "apk=liquid-glass-example-${VERSION}.apk" >> "$GITHUB_OUTPUT"
+
+      # The library itself (npm ci runs `prepare`, which builds lib/).
+      - run: npm ci
+
+      - run: npm ci
+        working-directory: ${{ env.APP_DIR }}
+
+      # Stamp the version so installed builds are easy to tell apart.
+      - name: Set app version
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          node -e "
+            const fs = require('fs');
+            const app = JSON.parse(fs.readFileSync('app.json', 'utf8'));
+            app.expo.version = '${{ steps.meta.outputs.version }}';
+            app.expo.android.versionCode = Number(process.env.GITHUB_RUN_NUMBER);
+            fs.writeFileSync('app.json', JSON.stringify(app, null, 2));
+          "
+
+      # android/ isn't committed: generate it (Expo Continuous Native Generation).
+      - run: npx expo prebuild --platform android --no-install
+        working-directory: ${{ env.APP_DIR }}
+
+      # Release build: the JavaScript is bundled into the APK, so it runs without a dev server.
+      # arm64-v8a covers practically every Android phone made since 2017 and keeps the APK small.
+      - name: Build APK
+        working-directory: ${{ env.APP_DIR }}/android
+        run: ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --no-daemon
+
+      - name: Collect APK
+        run: |
+          mkdir -p out
+          cp "$APP_DIR/android/app/build/outputs/apk/release/app-release.apk" "out/${{ steps.meta.outputs.apk }}"
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.apk }}
+          path: out/${{ steps.meta.outputs.apk }}
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.meta.outputs.tag }}
+          TITLE: ${{ steps.meta.outputs.title }}
+          APK: out/${{ steps.meta.outputs.apk }}
+        run: |
+          NOTES="Built from ${GITHUB_SHA::7}: $(git log -1 --format=%s)
+
+          Install: open this page on an Android phone, download the APK and allow installs from your browser when asked."
+          if [ "$IS_TAG" = "true" ]; then
+            gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TITLE" --notes "$NOTES" --verify-tag
+            gh release upload "$TAG" "$APK" --clobber
+          else
+            # Rolling pre-release: recreate it so it points at this commit with only this APK.
+            gh release delete "$TAG" --yes --cleanup-tag >/dev/null 2>&1 || true
+            gh release create "$TAG" "$APK" --title "$TITLE" --notes "$NOTES" --prerelease --target "$GITHUB_SHA"
+          fi
+          echo "url=https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}" >> "$GITHUB_OUTPUT"
+          echo "apk_url=https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/$(basename "$APK")" >> "$GITHUB_OUTPUT"
+
+      - name: Email the download link
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          TITLE: ${{ steps.meta.outputs.title }}
+          RELEASE_URL: ${{ steps.release.outputs.url }}
+          APK_URL: ${{ steps.release.outputs.apk_url }}
+        run: |
+          if [ -z "$SMTP_USERNAME" ] || [ -z "$SMTP_PASSWORD" ] || [ -z "$MAIL_TO" ]; then
+            echo "::notice::Email secrets not set; skipping email. The APK is on ${RELEASE_URL}"
+            exit 0
+          fi
+          SIZE=$(du -m out/*.apk | cut -f1)
+          {
+            echo "From: Liquid Glass CI <${SMTP_USERNAME}>"
+            echo "To: ${MAIL_TO}"
+            echo "Subject: ${TITLE} is ready"
+            echo "Content-Type: text/plain; charset=utf-8"
+            echo
+            echo "A new build of the Liquid Glass example app is ready."
+            echo
+            echo "Download the APK (${SIZE} MB): ${APK_URL}"
+            echo "Release page: ${RELEASE_URL}"
+            echo
+            echo "Commit: ${GITHUB_SHA::7} $(git log -1 --format=%s)"
+            echo "Build log: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          } > mail.txt
+          RCPT=""
+          for addr in $(echo "$MAIL_TO" | tr ',' ' '); do RCPT="$RCPT --mail-rcpt $addr"; done
+          PORT="${SMTP_PORT:-465}"
+          # 465 = TLS from the start (smtps://); 587 and others = STARTTLS (smtp:// + --ssl-reqd).
+          if [ "$PORT" = "465" ]; then SCHEME=smtps; else SCHEME=smtp; fi
+          curl --silent --show-error --ssl-reqd \
+            --url "${SCHEME}://${SMTP_SERVER:-smtp.gmail.com}:${PORT}" \
+            --user "${SMTP_USERNAME}:${SMTP_PASSWORD}" \
+            --mail-from "${SMTP_USERNAME}" $RCPT \
+            --upload-file mail.txt
+          echo "Email sent to ${MAIL_TO}"

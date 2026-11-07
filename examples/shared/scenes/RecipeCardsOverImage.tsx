@@ -1,18 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlassBackdrop, LiquidGlassCard } from 'react-native-liquid-glass-native';
+import { Wallpaper } from '../Background';
+import { text } from '../ui';
 
-const ITEMS = ['Morning run', 'Team sync', 'Lunch with Sam', 'Code review', 'Gym', 'Read'];
-
-/** A still "wallpaper" in the backdrop; the cards scroll over it. */
-function Wallpaper() {
-  return (
-    <View style={StyleSheet.absoluteFill}>
-      <View style={[styles.blob, { top: 40, left: -60, backgroundColor: '#ff6b6b' }]} />
-      <View style={[styles.blob, { top: 260, right: -80, backgroundColor: '#48dbfb' }]} />
-      <View style={[styles.blob, { top: 520, left: 20, backgroundColor: '#feca57' }]} />
-    </View>
-  );
-}
+const AGENDA = [
+  { time: '08:30', title: 'Morning run', place: 'Riverside Park', color: '#38ef7d' },
+  { time: '10:00', title: 'Team standup', place: 'Studio B', color: '#00c6ff' },
+  { time: '12:30', title: 'Lunch with Maya', place: 'Harbor Coffee', color: '#ffd200' },
+  { time: '14:00', title: 'Mix review', place: 'Control room', color: '#ff6a00' },
+  { time: '16:30', title: 'Mastering session', place: 'Room 4', color: '#f953c6' },
+  { time: '19:00', title: 'Gig: Low Orbit', place: 'Old Town Records', color: '#8e2de2' },
+];
 
 export default function RecipeCardsOverImage() {
   return (
@@ -24,10 +22,15 @@ export default function RecipeCardsOverImage() {
 
       {/* The scrolling list of glass cards sits on top. */}
       <ScrollView contentContainerStyle={styles.list}>
-        {ITEMS.map((title, i) => (
-          <LiquidGlassCard key={title} material="regular">
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.body}>{9 + i}:00 · 45 min</Text>
+        <Text style={styles.heading}>Today</Text>
+        {AGENDA.map((item) => (
+          <LiquidGlassCard key={item.title} style={styles.card}>
+            <Text style={styles.time}>{item.time}</Text>
+            <View style={[styles.accent, { backgroundColor: item.color }]} />
+            <View style={styles.flex}>
+              <Text style={text.title}>{item.title}</Text>
+              <Text style={text.caption}>{item.place}</Text>
+            </View>
           </LiquidGlassCard>
         ))}
       </ScrollView>
@@ -36,9 +39,11 @@ export default function RecipeCardsOverImage() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#1b1464' },
-  blob: { position: 'absolute', width: 260, height: 260, borderRadius: 130 },
-  list: { padding: 16, paddingTop: 48, gap: 12 },
-  title: { color: '#fff', fontSize: 17, fontWeight: '700' },
-  body: { color: '#fff', fontSize: 14, marginTop: 4 },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
+  list: { padding: 16, paddingTop: 56, gap: 12 },
+  heading: { color: '#fff', fontSize: 40, fontWeight: '800', letterSpacing: -1, marginBottom: 8 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  time: { color: '#fff', fontSize: 15, fontWeight: '700', width: 48, fontVariant: ['tabular-nums'] },
+  accent: { width: 4, height: 40, borderRadius: 2 },
+  flex: { flex: 1 },
 });

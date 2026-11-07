@@ -12,19 +12,39 @@ export default function QuickStart() {
 
       {/* 2. GLASS: next to the backdrop, on top of it. Never inside it. */}
       <LiquidGlassView material="regular" style={styles.header}>
-        <Text style={styles.title}>Photos</Text>
-        <Text style={styles.subtitle}>Scroll the background under the glass</Text>
+        <View>
+          <Text style={styles.title}>Discover</Text>
+          <Text style={styles.subtitle}>New releases this week</Text>
+        </View>
+        <Text style={styles.count}>8</Text>
       </LiquidGlassView>
 
-      <LiquidGlassButton title="Continue" style={styles.cta} onPress={() => {}} />
+      <LiquidGlassButton
+        size="large"
+        title="Start listening"
+        textStyle={styles.ctaText}
+        style={styles.cta}
+        onPress={() => {}}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0b0b14' },
-  header: { position: 'absolute', top: 48, left: 16, right: 16, padding: 16 },
-  title: { color: '#fff', fontSize: 22, fontWeight: '700' },
-  subtitle: { color: '#fff', fontSize: 14, marginTop: 4 },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
+  header: {
+    position: 'absolute',
+    top: 48,
+    left: 16,
+    right: 16,
+    padding: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: { color: '#fff', fontSize: 28, fontWeight: '800', letterSpacing: -0.6 },
+  subtitle: { color: 'rgba(255,255,255,0.85)', fontSize: 15, marginTop: 2 },
+  count: { color: '#fff', fontSize: 34, fontWeight: '200' },
   cta: { position: 'absolute', bottom: 40, alignSelf: 'center' },
+  ctaText: { color: '#fff', fontWeight: '700' },
 });

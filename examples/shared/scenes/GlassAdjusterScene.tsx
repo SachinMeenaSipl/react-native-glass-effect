@@ -6,7 +6,9 @@ import {
   GlassAdjuster,
   GlassBackdrop,
 } from 'react-native-liquid-glass-native';
+import { ART } from '../assets';
 import { Background } from '../Background';
+import { AppIcon, PauseIcon, text } from '../ui';
 
 export default function GlassAdjusterScene() {
   // The adjuster edits one object; spread it onto any glass.
@@ -15,15 +17,19 @@ export default function GlassAdjusterScene() {
   return (
     <View style={styles.screen}>
       <GlassBackdrop style={StyleSheet.absoluteFill}>
-        <Background />
+        <Background topInset={40} />
       </GlassBackdrop>
 
       <View style={styles.stack} pointerEvents="box-none">
         <FrostedGlass {...look} style={styles.preview}>
-          <Text style={styles.title}>Tune me</Text>
-          <Text style={styles.body}>
-            blur {look.blur} · tint {look.tintOpacity} · corners {look.cornerRadius}
-          </Text>
+          <AppIcon image={ART[2].image} size={56} />
+          <View style={styles.flex}>
+            <Text style={text.title}>Solar</Text>
+            <Text style={text.caption}>
+              blur {look.blur} · tint {look.tintOpacity} · corners {look.cornerRadius}
+            </Text>
+          </View>
+          <PauseIcon size={24} />
         </FrostedGlass>
 
         {/* The adjuster is itself a thick FrostedGlass panel. */}
@@ -38,9 +44,8 @@ export default function GlassAdjusterScene() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0b0b14' },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
   stack: { flex: 1, justifyContent: 'center', padding: 16, gap: 16 },
-  preview: { padding: 20 },
-  title: { color: '#fff', fontSize: 20, fontWeight: '700' },
-  body: { color: '#fff', fontSize: 14, marginTop: 4 },
+  preview: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16 },
+  flex: { flex: 1 },
 });

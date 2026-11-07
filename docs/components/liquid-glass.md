@@ -39,4 +39,4 @@ On iOS with the system renderer, Apple's glass already has its own frost, so `Li
 ## Tips
 
 - `variant="clear"` has almost no frost. Use it for small controls (play buttons, chips) over busy media, not behind body text.
-- A large `cornerRadius` makes a circle or pill, as in the example's play button.
+- A large `cornerRadius` makes a circle or pill, as in the example's LIVE badge.

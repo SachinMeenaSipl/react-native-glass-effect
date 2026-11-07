@@ -10,7 +10,7 @@ Glass cards that scroll over a still wallpaper. This is the pattern for "my glas
 
 ## How it works
 
-- **Only the background goes in the backdrop.** Here it's coloured shapes. In a real app, an `<Image>` with `StyleSheet.absoluteFill`.
+- **Only the background goes in the backdrop.** Here it's a wallpaper image (`Wallpaper`, an `<Image>` with `StyleSheet.absoluteFill`). In a real app, any image or gradient.
 - **The scrolling list sits on top**, outside the backdrop. Each card is glass, so each one blurs the part of the wallpaper under it as it scrolls.
 
 This is the answer to the most common question: "my cards scroll with the content, so where does the backdrop go?" The cards aren't the backdrop; the wallpaper is.

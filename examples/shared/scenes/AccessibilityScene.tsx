@@ -8,6 +8,7 @@ import {
   useReduceTransparency,
 } from 'react-native-liquid-glass-native';
 import { Background } from '../Background';
+import { Eyebrow, text } from '../ui';
 
 export default function AccessibilityScene() {
   // Android has no system "reduce transparency" setting, so apps can offer their own.
@@ -18,25 +19,35 @@ export default function AccessibilityScene() {
   return (
     <View style={styles.screen}>
       <GlassBackdrop style={StyleSheet.absoluteFill}>
-        <Background />
+        <Background topInset={40} />
       </GlassBackdrop>
 
       <View style={styles.stack} pointerEvents="box-none">
         <LiquidGlassView reduceTransparency={solid || 'auto'} fallbackColor="#1F2333" style={styles.panel}>
-          <Text style={styles.title}>{solid ? 'Solid surface' : 'Glass'}</Text>
-          <Text style={styles.body}>System reduce transparency: {String(systemReduceTransparency)}</Text>
-          <Text style={styles.body}>System reduce motion: {String(systemReduceMotion)}</Text>
+          <Eyebrow>{solid ? 'reduceTransparency · solid surface' : 'glass'}</Eyebrow>
+          <Text style={text.title}>Display & text</Text>
+
           <View style={styles.row}>
-            <Text style={styles.body}>Use solid surfaces</Text>
+            <Text style={text.body}>Use solid surfaces</Text>
             <Switch value={solid} onValueChange={setSolid} />
+          </View>
+          <View style={styles.row}>
+            <Text style={text.body}>System Reduce Transparency</Text>
+            <Text style={styles.value}>{systemReduceTransparency ? 'On' : 'Off'}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={text.body}>System Reduce Motion</Text>
+            <Text style={styles.value}>{systemReduceMotion ? 'On' : 'Off'}</Text>
           </View>
         </LiquidGlassView>
 
         {/* Buttons announce as buttons, including the disabled state. */}
         <LiquidGlassButton
-          title="Save"
+          size="large"
+          title="Save changes"
+          textStyle={styles.buttonText}
           accessibilityLabel="Save changes"
-          accessibilityHint="Saves your settings"
+          accessibilityHint="Saves your display settings"
           onPress={() => {}}
         />
       </View>
@@ -45,10 +56,18 @@ export default function AccessibilityScene() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0b0b14' },
-  stack: { flex: 1, justifyContent: 'center', padding: 16, gap: 16 },
-  panel: { padding: 18 },
-  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 },
-  title: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  body: { color: '#fff', fontSize: 14, marginTop: 4 },
+  screen: { flex: 1, backgroundColor: '#0c1150' },
+  stack: { flex: 1, justifyContent: 'center', padding: 16, gap: 18 },
+  panel: { padding: 20 },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 14,
+    paddingTop: 14,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.25)',
+  },
+  value: { color: '#fff', fontSize: 15, fontWeight: '700' },
+  buttonText: { color: '#fff', fontWeight: '700' },
 });

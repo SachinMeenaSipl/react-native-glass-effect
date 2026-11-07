@@ -1,0 +1,38 @@
+/* Home hero: show the native capture like a phone screen, in normal layout flow. */
+.VPHero .image-container {
+  width: auto;
+  height: auto;
+  transform: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.VPHero .image-bg {
+  background-image: linear-gradient(135deg, #00d2be 10%, #8c5aff 50%, #ff3c96 90%);
+  filter: blur(72px);
+  opacity: 0.5;
+}
+.VPHero .image-src {
+  position: static;
+  transform: none;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 360px;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(20, 10, 60, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+@media (min-width: 960px) {
+  .VPHero .image-src {
+    max-height: 480px;
+  }
+}
+/* Phones and tablets: the default theme pulls the hero image up with negative margins. */
+@media (max-width: 959px) {
+  .VPHero.has-image .image {
+    margin: 8px 0 32px;
+  }
+  .VPHero .image-src {
+    max-height: 340px;
+  }
+}

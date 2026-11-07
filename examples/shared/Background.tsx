@@ -1,33 +1,31 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-
-const BANDS = ['#ff6b6b', '#feca57', '#48dbfb', '#5f27cd', '#1dd1a1', '#ff9ff3', '#54a0ff', '#ee5253'];
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { ART, aurora } from './assets';
 
 /**
- * Colourful, scrollable content for glass to blur. Every example scene puts this
- * inside a <GlassBackdrop>, so the glass has something visible to bend and blur.
+ * What the example glass blurs: a vivid wallpaper with a scrolling feed of artwork on top.
+ * Every example scene puts this inside a <GlassBackdrop>. In your app, use your own content.
  */
-export function Background({ label = 'Scroll me' }: { label?: string }) {
+export function Background({ topInset = 120 }: { topInset?: number }) {
   return (
-    <ScrollView contentContainerStyle={styles.content}>
-      {BANDS.map((color, i) => (
-        <View key={color} style={[styles.band, { backgroundColor: color }]}>
-          <Text style={styles.bandText}>
-            {label} · {i + 1}
-          </Text>
-        </View>
-      ))}
-    </ScrollView>
+    <View style={StyleSheet.absoluteFill}>
+      <Wallpaper />
+      <ScrollView contentContainerStyle={[styles.feed, { paddingTop: topInset }]}>
+        {ART.map((item) => (
+          <Image key={item.title} source={item.image} style={styles.art} />
+        ))}
+      </ScrollView>
+    </View>
   );
 }
 
+/** Just the wallpaper, for scenes whose content shouldn't scroll. */
+export function Wallpaper() {
+  return <Image source={aurora} style={styles.fill} resizeMode="cover" />;
+}
+
 const styles = StyleSheet.create({
-  content: { paddingTop: 24, paddingBottom: 240, gap: 20, backgroundColor: '#0b0b14' },
-  band: {
-    height: 120,
-    marginHorizontal: 20,
-    borderRadius: 28,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  bandText: { color: '#ffffff', fontSize: 22, fontWeight: '800' },
+  // Explicit size: on Android an absoluteFill image without width/height draws at its natural size.
+  fill: { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' },
+  feed: { paddingHorizontal: 20, paddingBottom: 260, gap: 22 },
+  art: { width: '100%', height: 240, borderRadius: 28 },
 });
