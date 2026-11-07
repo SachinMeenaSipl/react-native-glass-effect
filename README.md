@@ -58,7 +58,7 @@ Works in Expo dev builds and EAS builds. **Expo Go can't load third-party native
 npm install react-native-liquid-glass-native react-native-web react-dom
 ```
 
-Alias `react-native` to `react-native-web` in your bundler. Setup for Vite, Next.js and Expo web: [Expo and web](docs/user-guide/11-expo-and-web.md).
+Alias `react-native` to `react-native-web` in your bundler. Step-by-step setup: [Vite](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/web), [Next.js](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/nextjs), [Expo web](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/expo#expo-web).
 
 ## The one rule
 
@@ -113,8 +113,8 @@ Expo dev builds use the Android and iOS renderers above.
 
 | For | Read |
 |---|---|
-| App developers | [User guide](docs/user-guide/README.md): install, concepts, every prop, recipes, troubleshooting |
-| Expo and web apps | [Expo and web](docs/user-guide/11-expo-and-web.md): Expo dev builds, Expo web, Vite, Next.js |
+| App developers | **[Documentation site](https://sachinmeenasipl.github.io/react-native-glass-effect/)**: installation guides, every component with live previews, recipes, API reference ([source](docs)) |
+| Expo and web apps | Installation guides for [Expo](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/expo), [Vite](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/web) and [Next.js](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/nextjs) |
 | Contributors and AI agents | [AGENTS.md](AGENTS.md) and [architecture docs](docs/architecture/README.md) |
 | Every edge case and how it's handled | [docs/architecture/05-edge-cases.md](docs/architecture/05-edge-cases.md) |
 

@@ -8,7 +8,7 @@
    - an Android **API 24–30** emulator (compat tier)
    - an iOS 26 simulator and an iOS 17/18 simulator
 4. Go through every screen of the example app (see `example/README.md`). Nothing may crash, and `adb logcat -s LiquidGlass` should only show expected warnings.
-5. Update the docs in the same PR: the user guide for API changes, the architecture docs for internals.
+5. Update the docs in the same PR: the pages under `docs/` (components, features, installation) for API changes, the architecture docs for internals. Preview the site with `cd website && npm install && npm run dev`.
 
 ## Release
 

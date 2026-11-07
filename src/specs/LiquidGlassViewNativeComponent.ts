@@ -47,7 +47,7 @@ export interface NativeLiquidGlassViewProps extends ViewProps {
   glassBorderOpacity?: WithDefault<Float, 0.3>;
   /** iOS 26+: which system glass style to use. */
   appearance?: WithDefault<'regular' | 'clear', 'regular'>;
-  /** Rendering budget. See docs/user-guide/06-quality-and-performance.md */
+  /** Rendering budget. See docs/features/quality.md */
   quality?: WithDefault<'auto' | 'high' | 'medium' | 'low' | 'static', 'auto'>;
   /** When true, draw an opaque `fallbackColor` instead of glass. */
   reduceTransparency?: WithDefault<boolean, false>;

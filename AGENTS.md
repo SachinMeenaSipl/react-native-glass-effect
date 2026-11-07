@@ -64,7 +64,9 @@ ios/
 ├─ LGShaderRenderer.{h,mm}               Metal port of the Android shader (iosRenderer="shader")
 └─ LiquidGlassModule.{h,mm}              TurboModule
 
-docs/user-guide/      for app developers
+docs/                 documentation site source (guide/, installation/, components/, features/, recipes/, reference/)
+docs/user-guide/      old page locations, now stubs that point to the site
+website/              VitePress config that builds docs/ into the site (npm run build)
 docs/architecture/    for contributors (read 01-overview first)
 example/              test app (see example/README.md)
 tools/android-typecheck/  compile Kotlin + JVM tests without an Android SDK
@@ -126,7 +128,7 @@ tools/ios-typecheck/      clang type-check of ios/*.mm against real iOS SDK + RN
 7. **Android**: add a field to `GlassConfig` (plus `sanitized()`, and `lerp()` if it animates), then a `@ReactProp` setter in `LiquidGlassViewManager.kt` that only writes `pending`. Use it in the renderer/painter.
 8. **iOS**: read `p.name` in `applyProps:`, or document it as Android-only. Run `npm run check:ios`.
 9. **Tests**: `npm test` (the contract test catches steps 1, 6 and 7 being out of sync) and `npm run check:android`. Add a `resolveMaterial` test.
-10. **Docs**: add a row to `docs/user-guide/04-components.md` and, if relevant, `docs/architecture/05-edge-cases.md`.
+10. **Docs**: add the prop to the table in `docs/components/liquid-glass-view.md` (and `docs/features/appearance.md` if it changes the look) and, if relevant, `docs/architecture/05-edge-cases.md`.
 
 ### 5.2 Adding a new material
 

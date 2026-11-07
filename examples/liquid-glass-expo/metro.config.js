@@ -13,7 +13,8 @@ config.watchFolders = [libraryRoot];
 // The library's own devDependencies include a different React. Without this, the
 // library could load a second copy of React and crash with "Invalid hook call".
 // Always resolve React and React Native from this app.
-const singletons = ['react', 'react-native'];
+// The shared example scenes (../shared) import the library too: resolve it from here.
+const singletons = ['react', 'react-native', 'react-native-liquid-glass-native'];
 const originalResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   const isSingleton = singletons.some((name) => moduleName === name || moduleName.startsWith(`${name}/`));

@@ -20,3 +20,7 @@ examples/*/dist/
 examples/*/.expo/
 examples/*/android/
 examples/*/ios/
+
+# Documentation site build output
+website/.vitepress/dist/
+website/.vitepress/cache/

@@ -1,59 +1,74 @@
-import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import {
-  FrostedGlass,
-  GlassBackdrop,
-  LiquidGlass,
-  LiquidGlassButton,
-  LiquidGlassView,
-  useGlassCapabilities,
-} from 'react-native-liquid-glass-native';
+import { useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SCENES, findScene } from '../../shared/scenes';
 
-const SWATCHES = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#5f27cd', '#1dd1a1', '#ff9ff3'];
+// #/<scene-id> opens a scene. ?embed=1 hides the gallery chrome (used by the docs site).
+const embedded = new URLSearchParams(window.location.search).has('embed');
+const readId = () => window.location.hash.replace(/^#\/?/, '');
 
 export default function App() {
-  const caps = useGlassCapabilities();
-  const [pressCount, setPressCount] = useState(0);
+  const [id, setId] = useState(readId);
 
-  return (
-    <View style={styles.root}>
-      <GlassBackdrop style={StyleSheet.absoluteFill}>
-        <ScrollView contentContainerStyle={styles.backdropContent}>
-          {SWATCHES.map((color, i) => (
-            <View key={color} style={[styles.swatch, { backgroundColor: color }]} />
-          ))}
-        </ScrollView>
-      </GlassBackdrop>
+  useEffect(() => {
+    const onHash = () => setId(readId());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
-      <View style={styles.overlay}>
-        <LiquidGlassView material="regular" style={styles.header}>
-          <Text style={styles.title}>Liquid Glass · Web</Text>
-          <Text style={styles.body}>
-            renderer: {caps.bestRenderer} · native: {caps.isNativeAvailable ? 'yes' : 'no'}
-          </Text>
-        </LiquidGlassView>
-
-        <LiquidGlass variant="regular" style={styles.card}>
-          <Text style={styles.body}>LiquidGlass (Apple-style)</Text>
-        </LiquidGlass>
-
-        <FrostedGlass material="thick" style={styles.card}>
-          <Text style={styles.body}>FrostedGlass (same shader everywhere)</Text>
-        </FrostedGlass>
-
-        <LiquidGlassButton title={`Pressed ${pressCount}×`} onPress={() => setPressCount((n) => n + 1)} />
+  const scene = findScene(id);
+  if (scene) {
+    const { Component } = scene;
+    return (
+      <View style={styles.fill}>
+        <Component />
+        {!embedded && (
+          <Pressable style={styles.back} onPress={() => (window.location.hash = '')}>
+            <Text style={styles.backText}>← All examples</Text>
+          </Pressable>
+        )}
       </View>
-    </View>
+    );
+  }
+
+  const groups = [...new Set(SCENES.map((s) => s.group))];
+  return (
+    <ScrollView style={styles.fill} contentContainerStyle={styles.index}>
+      <Text style={styles.h1}>Liquid Glass · Web examples</Text>
+      <Text style={styles.note}>
+        Every example runs the real library through react-native-web. On the web, glass uses CSS
+        backdrop-filter; refraction and touch lighting need Android or iOS.
+      </Text>
+      {groups.map((group) => (
+        <View key={group} style={styles.group}>
+          <Text style={styles.h2}>{group}</Text>
+          {SCENES.filter((s) => s.group === group).map((s) => (
+            <Pressable key={s.id} onPress={() => (window.location.hash = `/${s.id}`)} style={styles.link}>
+              <Text style={styles.linkText}>{s.title}</Text>
+            </Pressable>
+          ))}
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, minHeight: '100vh', backgroundColor: '#0b0b14' },
-  backdropContent: { paddingTop: 120, paddingBottom: 400 },
-  swatch: { height: 110, borderRadius: 28, marginHorizontal: 24, marginBottom: 28 },
-  overlay: { flex: 1, justifyContent: 'flex-end', padding: 16, gap: 12 },
-  header: { marginTop: 56, padding: 16, borderRadius: 24 },
-  card: { padding: 16, borderRadius: 24 },
-  title: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  body: { color: '#fff', fontSize: 14 },
+  fill: { flex: 1, height: '100vh', backgroundColor: '#0b0b14' },
+  index: { padding: 24, maxWidth: 720, width: '100%', alignSelf: 'center' },
+  h1: { color: '#fff', fontSize: 28, fontWeight: '800' },
+  note: { color: '#c8c8d4', fontSize: 15, marginTop: 8, lineHeight: 22 },
+  group: { marginTop: 24 },
+  h2: { color: '#fff', fontSize: 18, fontWeight: '700', marginBottom: 8 },
+  link: { paddingVertical: 10, paddingHorizontal: 14, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.08)', marginBottom: 8 },
+  linkText: { color: '#fff', fontSize: 16 },
+  back: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+  },
+  backText: { color: '#fff', fontSize: 13 },
 });

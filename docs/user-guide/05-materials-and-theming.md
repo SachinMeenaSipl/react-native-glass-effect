@@ -1,50 +1,6 @@
-# 5 · Materials & theming
+# Materials & theming
 
-## Built-in materials
+This page has moved to the documentation site, with complete examples and live previews:
 
-| Material | Blur | Tint (light / dark) | Refraction | Feels like | Good for |
-|---|---|---|---|---|---|
-| `thin` | 10 | 8% / 18% | 0.25 | Barely frosted | Overlays on photos, floating chips |
-| `regular` | 20 | 14% / 28% | 0.35 | Classic glass | Headers, cards, buttons (default) |
-| `thick` | 36 | 28% / 45% | 0.30 | Milky, very readable | Sheets, menus, text-heavy panels |
-| `clear` | 4 | 4% / 8% | 0.50 | A lens, almost no frost | Small controls over busy media |
-| `liquid` | 4 | 60% / 50% | 1.00 | Apple-style Liquid Glass | Used by `<LiquidGlass>` |
-| `liquidClear` | 0 | 20% / 25% | 1.00 | Apple-style clear lens | Used by `<LiquidGlass variant="clear">` |
-
-## Override one value
-
-```tsx
-<LiquidGlassView material="thick" blur={48} tint="#A0C4FF" />
-```
-
-## Change the look app-wide
-
-```tsx
-<GlassThemeProvider
-  theme={{
-    defaultMaterial: 'thick',
-    materials: {
-      thick: { blur: 40 },
-      regular: { tint: { light: '#FFFFFF', dark: '#101820' } },
-    },
-  }}
->
-  <App />
-</GlassThemeProvider>
-```
-
-Order (last wins): **built-in preset → theme → component prop**, then `intensity`.
-
-## Dark mode
-
-Materials carry light and dark values. The library follows the system scheme; force it with `colorScheme: 'light' | 'dark'` in the theme.
-
-## Brand colours
-
-```tsx
-// Subtle brand tint
-<LiquidGlassView tint="#6D5DFC" tintOpacity={0.18} />
-
-// Platform colours adapt to dark mode automatically
-<LiquidGlassView tint={PlatformColor('systemBlue')} />   // iOS
-```
+- [Materials](https://sachinmeenasipl.github.io/react-native-glass-effect/features/materials) (source: [`docs/features/materials.md`](../features/materials.md))
+- [Theming](https://sachinmeenasipl.github.io/react-native-glass-effect/features/theming) (source: [`docs/features/theming.md`](../features/theming.md))

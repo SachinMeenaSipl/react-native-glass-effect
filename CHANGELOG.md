@@ -6,7 +6,8 @@
 - New: web support (React, Vite, Next.js with SSR, Expo web). Web bundles resolve a web build through the `browser` and `node` export conditions, so native component specs are never bundled for the web
 - New: `react-native-web` is an optional peer dependency
 - Build: `npm run prepare` also writes `lib/web` (`scripts/build-web.js`)
-- Docs: new user-guide page 11, Expo and web
+- Docs: new documentation site (VitePress, `website/`) with a separate installation guide per setup, a page per component and feature, recipes, and live web previews plus Android screenshots for every example
+- Examples: shared example scenes (`examples/shared/scenes`) used by the docs, the Vite gallery and the Expo app
 
 ## 0.2.0
 
