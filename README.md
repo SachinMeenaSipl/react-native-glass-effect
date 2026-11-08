@@ -1,6 +1,16 @@
 # react-native-liquid-glass-native
 
-Liquid Glass surfaces for React Native, Expo and the web: real, live background blur with edge refraction, rim lighting and touch response.
+[![npm version](https://img.shields.io/npm/v/react-native-liquid-glass-native.svg)](https://www.npmjs.com/package/react-native-liquid-glass-native)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-liquid-glass-native.svg)](https://www.npmjs.com/package/react-native-liquid-glass-native)
+[![license](https://img.shields.io/npm/l/react-native-liquid-glass-native.svg)](LICENSE)
+[![platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS%20%7C%20Expo%20%7C%20Web-6d5dfc)](https://sachinmeenasipl.github.io/react-native-glass-effect/reference/platform-support)
+[![docs](https://img.shields.io/badge/docs-website-0c1150)](https://sachinmeenasipl.github.io/react-native-glass-effect/)
+
+**Liquid Glass and glassmorphism for React Native, Expo and the web.** Real, live background blur with edge refraction, rim lighting and touch response: Apple's iOS 26 `UIGlassEffect` on iPhone, an AGSL refraction shader on Android, and CSS `backdrop-filter` on the web. Drop-in frosted glass views, buttons and cards with one API.
+
+[![Liquid Glass for React Native: glass panels blurring and bending colourful artwork on Android](https://sachinmeenasipl.github.io/react-native-glass-effect/og-image.jpg)](https://sachinmeenasipl.github.io/react-native-glass-effect/)
+
+**[Documentation](https://sachinmeenasipl.github.io/react-native-glass-effect/)** · [Installation](https://sachinmeenasipl.github.io/react-native-glass-effect/installation/) · [Live web demo](https://sachinmeenasipl.github.io/react-native-glass-effect/demo/) · [Components](https://sachinmeenasipl.github.io/react-native-glass-effect/components/liquid-glass-view)
 
 - **Android is first-class.** GPU blur and an AGSL refraction shader on Android 13+, GPU blur on Android 12, and an automatic snapshot fallback on Android 7–11.
 - **iOS uses the system by default.** iOS 26+ gets Apple's own `UIGlassEffect`; iOS 15–25 gets native materials. `iosRenderer="shader"` switches to the library's Metal renderer to match Android.

@@ -1,4 +1,10 @@
+---
+description: "What Liquid Glass renders on each platform: Android 7 to 16, iOS 15 to 26, Expo and the web, with a feature matrix and tested setups."
+---
+
 # Platform support
+
+What each platform draws. For minimum versions and what has been tested, see [Compatibility](/reference/compatibility). The status labels are explained in the [Glossary](/reference/glossary#support-status-labels).
 
 ## Feature matrix
 
@@ -39,6 +45,19 @@
 | Next.js | Next.js 16 (App Router, Turbopack) | `next build` prerenders; the browser hydrates; buttons work |
 
 Not yet tested: iOS devices and simulators in these setups, EAS Build, Expo Go beyond the fallback.
+
+## Side by side
+
+The same example screens, captured on an Android emulator (native shader renderer) and in a browser (CSS renderer):
+
+| Screen | Android | Web |
+|---|---|---|
+| Materials | ![Six glass materials on Android](/previews/android/materials.jpg) | ![Six glass materials in a browser](/previews/web/materials.jpg) |
+| Lock screen | ![Glass notifications on Android](/previews/android/liquid-glass-view.jpg) | ![Glass notifications in a browser](/previews/web/liquid-glass-view.jpg) |
+
+On Android the rim of each panel bends the artwork behind it (refraction). The browser draws the blur and tint only.
+
+iOS captures aren't available yet: they need a Mac with a simulator or an iPhone.
 
 ## Why platforms look different
 

@@ -4,9 +4,23 @@ A ready-made panel of − / + controls for tuning glass live. It edits one plain
 
 <Preview id="glass-adjuster" />
 
-## Example
+## Import
+
+```tsx
+import { GlassAdjuster } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/GlassAdjusterMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/GlassAdjusterScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 Tap − or + and the glass above updates. The panel itself is a thick `FrostedGlass`.
 

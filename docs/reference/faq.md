@@ -1,3 +1,7 @@
+---
+description: "Answers to common questions about React Native Liquid Glass: Expo Go, web support, the new architecture, performance, dark mode, FlatList and animation."
+---
+
 # FAQ
 
 ## Does it work in Expo Go?

@@ -1,3 +1,7 @@
+---
+description: "Liquid Glass in Next.js with the App Router and server rendering. Turbopack and webpack alias setup for react-native-web, plus a client component example."
+---
+
 # Install: Next.js
 
 Use the library in a Next.js app with the App Router, including server-side rendering and static prerendering.
@@ -111,6 +115,12 @@ The page prerenders on the server and hydrates in the browser.
 - The library doesn't read `window`, `document` or `navigator` when it's imported, so pages can prerender.
 - On the server and in the browser, the library loads its web build (`lib/web`) through the `node` and `browser` export conditions. Native code is never bundled.
 - `useGlassCapabilities()` returns `platform: "web"` and `bestRenderer: "fallback"`.
+
+## Known limitations
+
+- The same as [the web](/installation/web#known-limitations): the CSS renderer, without refraction or touch lighting.
+- Files that use glass components with hooks or event handlers need `'use client'`.
+- Tested with Next.js 16 and Turbopack. The webpack alias is provided for `next build --webpack` but hasn't been tested.
 
 ## Troubleshooting
 

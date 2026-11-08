@@ -1,3 +1,7 @@
+---
+description: "Complete API reference for react-native-liquid-glass-native: every component, hook, function, constant and TypeScript type the package exports."
+---
+
 # API reference
 
 Everything the package exports. Anything not listed here is internal and may change without notice.

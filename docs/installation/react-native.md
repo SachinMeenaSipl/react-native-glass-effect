@@ -1,3 +1,7 @@
+---
+description: "Step-by-step install of Liquid Glass in a bare React Native app for Android and iOS, with the New Architecture, pod install and a first glass view."
+---
+
 # Install: React Native (CLI)
 
 For bare React Native apps created with the React Native CLI (`npx @react-native-community/cli init`), running on Android and iOS.
@@ -89,6 +93,16 @@ Scroll: the header blurs the colours live. Then [verify the install](/installati
 | any, with `iosRenderer="shader"` | the library's Metal renderer | Matches Android. Needs a `<GlassBackdrop>` |
 
 Apple's Liquid Glass on iOS 26 needs the app to be **built with Xcode 26**. Built with an older Xcode, iOS 26 devices get system materials instead.
+
+## Known limitations
+
+- **The old architecture isn't supported.** The New Architecture must be on.
+- **Android 12** has no refraction. **Android 7–11** blurs a snapshot, and can't capture video or maps in a `TextureView`, or images decoded as HARDWARE bitmaps.
+- **Content in a `SurfaceView`** (some video and map views) can't be captured on any Android version.
+- **iOS 26 system glass** ignores `blur`, `intensity`, `illumination` and `lightAngle`: Apple decides them. Use `iosRenderer="shader"` for full control.
+- **Apple's Liquid Glass** needs the app to be built with Xcode 26.
+
+Full list: [Platform support](/reference/platform-support) and [Compatibility](/reference/compatibility).
 
 ## Troubleshooting
 

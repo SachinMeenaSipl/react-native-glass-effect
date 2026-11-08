@@ -1,3 +1,7 @@
+---
+description: "Install react-native-liquid-glass-native in a React Native CLI app, an Expo app, a Vite React app or a Next.js app. Requirements and a guide for each setup."
+---
+
 # Installation
 
 Pick the guide for your setup. Each one is complete: you can follow it from an empty project to glass on screen.

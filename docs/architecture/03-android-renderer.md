@@ -4,6 +4,8 @@ Android is the reason this library exists, so this is the deepest doc.
 
 ---
 
+<AndroidPipelineDiagram />
+
 ## 1. The three problems
 
 | Problem | Solution in this repo |

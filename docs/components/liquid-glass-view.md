@@ -4,11 +4,24 @@ The core glass surface. Every other glass component is built from it. It accepts
 
 <Preview id="liquid-glass-view" />
 
-## Example
+## Import
+
+```tsx
+import { LiquidGlassView } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/LiquidGlassViewMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/LiquidGlassViewScene.tsx
 
-`Background` is the colourful scrolling content used by every example. See the [Quick start](/guide/quick-start#step-1-a-background-to-blur).
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
+
 
 ## Props
 

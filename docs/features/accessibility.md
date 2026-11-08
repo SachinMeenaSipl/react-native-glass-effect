@@ -39,6 +39,32 @@ Android has no system Reduce Transparency setting. If your app has its own, pass
 | `useReduceTransparency()` | The iOS Reduce Transparency setting, live. Always `false` on Android and web |
 | `useReduceMotion()` | The system Reduce Motion setting, live |
 
+## Automatic or your part
+
+| Behaviour | Automatic | Your part |
+|---|---|---|
+| Opaque surface when iOS Reduce Transparency is on | ✅ (`reduceTransparency="auto"`, the default) | Android has no such setting: pass your own |
+| No movement when Reduce Motion is on | ✅ | — |
+| `LiquidGlassButton` role and disabled state | ✅ (`button`, `disabled`) | Add `accessibilityLabel` when the title isn't descriptive |
+| Labels, hints, roles on other glass views | — | Pass `accessibility*` props like on any `View` |
+| Text contrast | — | Choose material and text colour (below) |
+
+## Touch targets
+
+`LiquidGlassButton` sizes are 36, 48 and 56 dp tall. Apple recommends at least 44 pt for touch targets and Android 48 dp, so `size="small"` is below both. When you use it, enlarge the touch area without changing the look:
+
+```tsx
+<LiquidGlassButton size="small" title="Skip" hitSlop={8} onPress={skip} />
+```
+
+## Interaction states
+
+| State | What `LiquidGlassButton` shows |
+|---|---|
+| Pressed | A brighter highlight, and press feedback (native squish on Android, a small scale spring elsewhere) |
+| Pressed, with Reduce Motion on | The highlight only |
+| Disabled | 50% opacity, no press feedback, announced as disabled |
+
 ## Text contrast (your part)
 
 Glass shows whatever is behind it, so contrast changes as content scrolls.

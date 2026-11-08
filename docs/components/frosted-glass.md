@@ -10,9 +10,23 @@ Use `FrostedGlass` when Android and iOS must look the same: brand surfaces, desi
 
 The cost: on iOS it samples a `<GlassBackdrop>` and runs a Metal shader, which takes more GPU time than Apple's system glass.
 
-## Example
+## Import
+
+```tsx
+import { FrostedGlass } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/FrostedGlassMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/FrostedGlassScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 ## Props
 

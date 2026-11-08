@@ -1,0 +1,18 @@
+{
+  // Type-checks every documented example (minimal/ and scenes/) against the library source.
+  // Run from the repo root: npx tsc -p examples/shared
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    // Resolve the library through its "source" export (src/), so no build is needed.
+    "customConditions": ["source"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["minimal", "scenes", "assets", "*.tsx"]
+}

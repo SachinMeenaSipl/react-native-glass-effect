@@ -3,10 +3,10 @@ import { computed, ref } from 'vue';
 import { useData, withBase } from 'vitepress';
 
 // Shows one example scene: the live web build (iframe) and the native Android capture.
-const props = defineProps<{ id: string; height?: number }>();
+const props = defineProps<{ id: string; height?: number; initial?: 'android' | 'web' }>();
 const { site } = useData();
 
-const tab = ref<'android' | 'web'>('android');
+const tab = ref<'android' | 'web'>(props.initial ?? 'android');
 const frameHeight = computed(() => props.height ?? 640);
 const webUrl = computed(() => `${site.value.base}demo/?embed=1#/${props.id}`);
 const androidSrc = computed(() => withBase(`/previews/android/${props.id}.jpg`));

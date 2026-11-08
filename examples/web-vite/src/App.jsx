@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { MINIMAL } from '../../shared/minimal';
 import { SCENES, findScene } from '../../shared/scenes';
 
-// #/<scene-id> opens a scene. ?embed=1 hides the gallery chrome (used by the docs site).
+// #/<scene-id> opens a scene, #/minimal/<page-id> a copy-paste example from the docs.
+// ?embed=1 hides the gallery chrome (used by the docs site).
 const embedded = new URLSearchParams(window.location.search).has('embed');
 const readId = () => window.location.hash.replace(/^#\/?/, '');
 
@@ -14,6 +16,15 @@ export default function App() {
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
+
+  const Minimal = id.startsWith('minimal/') ? MINIMAL[id.slice('minimal/'.length)] : undefined;
+  if (Minimal) {
+    return (
+      <View style={styles.fill}>
+        <Minimal />
+      </View>
+    );
+  }
 
   const scene = findScene(id);
   if (scene) {

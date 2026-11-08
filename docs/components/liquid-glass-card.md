@@ -4,9 +4,23 @@ A padded glass container for grouped content. It's a [`LiquidGlassView`](/compon
 
 <Preview id="liquid-glass-card" />
 
-## Example
+## Import
+
+```tsx
+import { LiquidGlassCard } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/LiquidGlassCardMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/CardScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 ## Props
 

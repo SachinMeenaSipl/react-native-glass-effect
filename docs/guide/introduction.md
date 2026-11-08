@@ -1,3 +1,7 @@
+---
+description: "React Native Liquid Glass draws real, live glass in React Native, Expo and web apps: background blur, edge refraction, rim lighting and touch response."
+---
+
 # Introduction
 
 **react-native-liquid-glass-native** draws "Liquid Glass" surfaces in React Native, Expo and web apps. The glass is real: it blurs, bends and lights whatever is behind it, live, while that content scrolls or animates.

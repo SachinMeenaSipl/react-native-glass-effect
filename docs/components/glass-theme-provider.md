@@ -4,9 +4,23 @@ Sets app-wide glass defaults once, instead of on every component. It's optional:
 
 <Preview id="glass-theme-provider" />
 
-## Example
+## Import
+
+```tsx
+import { GlassThemeProvider } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/GlassThemeProviderMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/ThemeScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 ## Props
 

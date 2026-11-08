@@ -1,4 +1,7 @@
 ---
+title: "Liquid Glass for React Native, Expo and the Web"
+titleTemplate: false
+description: Liquid Glass and glassmorphism for React Native, Expo and the web. Real-time background blur, iOS 26 UIGlassEffect, Android refraction shader, frosted glass views, buttons and cards.
 layout: home
 
 hero:

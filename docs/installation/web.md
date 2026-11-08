@@ -1,3 +1,7 @@
+---
+description: "Glassmorphism on the web with React and Vite. Set up react-native-web and get real CSS backdrop-filter blur from the same Liquid Glass components."
+---
+
 # Install: Web (React with Vite)
 
 Use the library in a React web app. Components render through [react-native-web](https://necolas.github.io/react-native-web/), and the glass uses CSS `backdrop-filter`.
@@ -138,6 +142,24 @@ The same three things apply in any bundler:
 ::: info
 Only Vite and Next.js have been tested so far.
 :::
+
+## Known limitations
+
+- The web uses the **CSS renderer**: refraction, distortion, RGB split, rim light, touch light and tilt lighting don't apply.
+- Glass blurs what the browser paints behind it. An ancestor with `opacity` below 1, `filter`, `mask` or `will-change` limits what it can blur.
+- Tested in Chromium-based browsers. Safari and Firefox support `backdrop-filter` but haven't been tested. See [Compatibility](/reference/compatibility#browsers).
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| Build fails: `Could not load react-native/Libraries/...` | Add the `react-native` → `react-native-web` alias (Step 3) |
+| `global is not defined` in the browser | Add `define: { global: 'globalThis' }` (Step 3) |
+| "Invalid hook call" | Add `resolve.dedupe` (Step 3) |
+| The page is blank or content collapses | Give the root a full height (Step 4) |
+| No blur, only tint | The browser lacks `backdrop-filter`, or an ancestor limits it (see above) |
+
+More in [Troubleshooting](/reference/troubleshooting#web).
 
 ## Next
 

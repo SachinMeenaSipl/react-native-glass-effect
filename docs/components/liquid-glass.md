@@ -12,9 +12,23 @@ Apple-style Liquid Glass on both platforms. On iOS 26+ it uses Apple's own glass
 | [`FrostedGlass`](/components/frosted-glass) | The same look on both platforms, with every prop working on iOS too |
 | [`LiquidGlassView`](/components/liquid-glass-view) | Full control, any material |
 
-## Example
+## Import
+
+```tsx
+import { LiquidGlass } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/LiquidGlassMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/LiquidGlassScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 ## Props
 

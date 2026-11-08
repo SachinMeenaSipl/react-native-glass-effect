@@ -1,6 +1,6 @@
-# Quality and performance
+# Quality
 
-Glass costs GPU time. The `quality` prop sets a budget per view, and the default `auto` picks one for each device.
+Glass costs GPU time. The `quality` prop sets a budget per view, and the default `auto` picks one for each device. For where the cost comes from and how to measure it, see [Performance](/features/performance).
 
 <Preview id="quality" />
 

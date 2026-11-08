@@ -36,3 +36,10 @@
     max-height: 340px;
   }
 }
+
+/* Screenshots inside docs tables (platform comparison). */
+.vp-doc td img {
+  max-width: 220px;
+  height: auto;
+  border-radius: 12px;
+}

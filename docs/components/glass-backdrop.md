@@ -10,6 +10,18 @@ On Android, a view can't see what's behind it. `GlassBackdrop` records what it d
 
 On iOS (with the default system renderer) and on the web, the platform blurs the screen by itself, so `GlassBackdrop` is a plain `View` there. Keep it anyway: the same code then works everywhere, and the iOS shader renderer needs it.
 
+## Import
+
+```tsx
+import { GlassBackdrop } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/GlassBackdropMinimal.tsx
+
 ## Basic usage
 
 ```tsx
@@ -22,11 +34,13 @@ On iOS (with the default system renderer) and on the web, the platform blurs the
 </View>
 ```
 
-## Example: two backdrops on one screen
+## Full example: two backdrops on one screen
 
 When a screen has more than one backdrop, name them with `backdropId`, and tell each glass which one to sample:
 
 <<< @/../examples/shared/scenes/GlassBackdropScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 Without `backdropId`, a glass view picks the backdrop behind it automatically. You only need names when backdrops overlap or sit next to each other.
 

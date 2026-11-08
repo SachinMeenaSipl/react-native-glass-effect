@@ -13,6 +13,7 @@ import IosRenderersScene from './IosRenderersScene';
 import LiquidGlassScene from './LiquidGlassScene';
 import LiquidGlassViewScene from './LiquidGlassViewScene';
 import MaterialsScene from './MaterialsScene';
+import PlaygroundScene from './PlaygroundScene';
 import QualityScene from './QualityScene';
 import QuickStart from './QuickStart';
 import RecipeCardsOverImage from './RecipeCardsOverImage';
@@ -32,6 +33,7 @@ export interface Scene {
 
 export const SCENES: Scene[] = [
   { id: 'quick-start', title: 'Quick start', group: 'Getting started', Component: QuickStart },
+  { id: 'playground', title: 'Playground', group: 'Getting started', Component: PlaygroundScene },
   { id: 'liquid-glass-view', title: 'LiquidGlassView', group: 'Components', Component: LiquidGlassViewScene },
   { id: 'glass-backdrop', title: 'GlassBackdrop', group: 'Components', Component: GlassBackdropScene },
   { id: 'liquid-glass', title: 'LiquidGlass', group: 'Components', Component: LiquidGlassScene },

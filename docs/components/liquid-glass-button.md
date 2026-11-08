@@ -4,9 +4,23 @@ A pill-shaped glass button with press feedback. It accepts every glass prop, eve
 
 <Preview id="liquid-glass-button" />
 
-## Example
+## Import
+
+```tsx
+import { LiquidGlassButton } from 'react-native-liquid-glass-native';
+```
+
+## Minimal example
+
+A complete screen that uses only React Native and this library. Copy it into `App.tsx` to try it.
+
+<<< @/../examples/shared/minimal/LiquidGlassButtonMinimal.tsx
+
+## Full example
 
 <<< @/../examples/shared/scenes/ButtonScene.tsx
+
+This is the screen in the preview above. It uses helpers from the repo's `examples/shared` folder (`Background`, the `ART` artwork and drawn icons); replace them with your own content.
 
 ## Props
 

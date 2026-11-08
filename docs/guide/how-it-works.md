@@ -2,6 +2,10 @@
 
 You don't need this page to use the library, but two minutes here make every other page easier.
 
+## The big picture
+
+<ArchitectureDiagram />
+
 ## The problem
 
 Glass shows a blurred, bent copy of **what's behind it**. A normal view can't see behind itself: it only knows how to draw its own pixels. So every platform needs a different trick.
@@ -16,6 +20,10 @@ Glass shows a blurred, bent copy of **what's behind it**. A normal view can't se
 When the content under the glass changes, or the glass moves, only the glass views that overlap the change redraw. Changes far away cost nothing.
 
 On Android 7–11, GPU blur isn't available, so the library takes a snapshot of the backdrop, blurs it on the CPU and reuses it while it can.
+
+One frame, step by step:
+
+<AndroidPipelineDiagram />
 
 ## iOS
 

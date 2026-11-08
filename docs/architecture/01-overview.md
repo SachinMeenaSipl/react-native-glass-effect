@@ -1,5 +1,7 @@
 # 01 · Overview
 
+<ArchitectureDiagram />
+
 ## Layers
 
 ```
