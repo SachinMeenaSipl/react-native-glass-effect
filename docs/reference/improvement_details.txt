@@ -1,0 +1,1645 @@
+React Native Liquid Glass – Documentation Review & Improvement Specification
+
+1. Project Objective
+
+Improve the existing documentation website:
+
+https://sachinmeenasipl.github.io/react-native-glass-effect/
+
+GitHub repository:
+https://github.com/sachinmeenasipl/react-native-glass-effect
+
+The current documentation already has a good foundation, including component references, installation instructions, platform-specific documentation, architecture, examples, recipes, theming, accessibility, troubleshooting, and FAQs.
+
+The objective is to bring it to professional open-source library documentation standards.
+
+Important instructions
+
+Do not redesign the entire website.
+
+Preserve the existing visual identity, colors, typography, layout, navigation, and responsive behavior.
+
+Preserve all working components, interactive demos, examples, and existing functionality.
+
+Do not remove existing documentation unless it is demonstrably incorrect or redundant.
+
+Do not invent features, APIs, platform support, compatibility, benchmarks, or performance claims.
+
+Inspect the actual source code before changing technical documentation.
+
+Update documentation based on implemented and verified functionality, not architectural intentions.
+
+Do not modify the library implementation unless a documentation issue exposes an actual implementation bug. Report such issues separately.
+
+Maintain consistent terminology throughout the documentation.
+
+Keep the documentation understandable for developers who are using the library for the first time.
+
+2. Priority-Based Improvement Plan
+
+P0 – Critical improvements
+
+These should be completed before promoting the package as production-ready.
+
+Task 1: Verify all platform compatibility claims
+
+Review the actual package configuration and native implementations.
+
+Verify:
+
+React Native minimum version.
+
+React Native maximum version tested.
+
+New Architecture requirements.
+
+Fabric support.
+
+Legacy Architecture support, if implemented.
+
+iOS minimum deployment target.
+
+Android minimum SDK.
+
+Android target SDK.
+
+Expo compatibility.
+
+Expo Go limitations.
+
+Expo development build support.
+
+EAS Build support.
+
+React Native Web compatibility.
+
+Vite compatibility.
+
+Next.js compatibility.
+
+Create a single source of truth for platform compatibility.
+
+Add a dedicated compatibility matrix.
+
+Suggested table:
+
+Platform
+
+Support
+
+Minimum version
+
+Verification
+
+iOS
+
+Implemented status
+
+Actual minimum
+
+Tested / Untested
+
+Android
+
+Implemented status
+
+Actual minimum
+
+Tested / Untested
+
+Expo Go
+
+Actual behavior
+
+Actual version
+
+Tested / Untested
+
+Expo Development Build
+
+Actual behavior
+
+Actual version
+
+Tested / Untested
+
+Web
+
+Actual behavior
+
+Actual requirements
+
+Tested / Untested
+
+Use only verified values.
+
+Clearly distinguish:
+
+Implemented: Functionality exists in the source code.
+
+Tested: Functionality has been verified on the specified environment.
+
+Untested: Implementation exists but has not been verified.
+
+Unsupported: Functionality is not available.
+
+Do not describe an untested platform as fully supported.
+
+Task 2: Improve installation documentation
+
+Review every existing installation guide.
+
+The documentation currently covers:
+
+React Native CLI.
+
+Expo.
+
+Vite.
+
+Next.js.
+
+Ensure each guide includes:
+
+Prerequisites.
+
+Supported framework versions.
+
+Installation command.
+
+Native dependency installation.
+
+iOS CocoaPods installation, if required.
+
+Android configuration, if required.
+
+New Architecture requirements.
+
+Babel or Metro configuration, if required.
+
+Native rebuild requirements.
+
+Minimal working example.
+
+Troubleshooting.
+
+Known limitations.
+
+Add separate instructions for:
+
+React Native CLI
+
+npm installation.
+
+iOS pod installation.
+
+Android configuration.
+
+Rebuild instructions.
+
+Expo
+
+Expo Go limitations.
+
+Development builds.
+
+Config plugins, if implemented.
+
+EAS Build configuration.
+
+Native dependency requirements.
+
+Web
+
+Vite setup.
+
+Next.js setup.
+
+CSS requirements.
+
+Browser compatibility.
+
+Server-side rendering considerations.
+
+Do not add configuration steps that the package does not actually require.
+
+Task 3: Add tested code examples
+
+Review all code examples across the documentation.
+
+Every example should be checked against the actual exported TypeScript API.
+
+Requirements:
+
+Correct component names.
+
+Correct import paths.
+
+Correct prop names.
+
+Correct property types.
+
+Correct default values.
+
+Correct platform behavior.
+
+Correct dependencies.
+
+Important issue:
+
+Some existing examples import project-specific modules such as:
+
+../assets
+
+../Background
+
+../ui
+
+These dependencies make examples difficult to copy into an external project.
+
+Improve them by providing two versions:
+
+A. Minimal example:
+
+Only React Native built-in components.
+
+Only the library's required imports.
+
+No private project dependencies.
+
+Ready to copy and paste.
+
+B. Advanced example:
+
+Realistic application implementation.
+
+Additional styling.
+
+Optional dependencies clearly identified.
+
+All important examples must be reproducible.
+
+3. P1 – API Documentation Improvements
+
+Task 4: Improve component reference documentation
+
+Review every exported component.
+
+Components to inspect include:
+
+LiquidGlassView
+
+GlassBackdrop
+
+LiquidGlass
+
+FrostedGlass
+
+LiquidGlassButton
+
+LiquidGlassCard
+
+GlassAdjuster
+
+GlassThemeProvider
+
+For every component, provide a consistent documentation structure.
+
+Required structure
+
+Description.
+
+Purpose.
+
+Import statement.
+
+Basic example.
+
+Advanced example.
+
+TypeScript interface.
+
+Props table.
+
+Default values.
+
+Platform compatibility.
+
+Limitations.
+
+Usage recommendations.
+
+Related components.
+
+Props table format
+
+Prop
+
+Type
+
+Default
+
+Description
+
+iOS
+
+Android
+
+Web
+
+intensity
+
+Actual type
+
+Actual default
+
+Actual behavior
+
+Status
+
+Status
+
+Status
+
+blur
+
+Actual type
+
+Actual default
+
+Actual behavior
+
+Status
+
+Status
+
+Status
+
+material
+
+Actual type
+
+Actual default
+
+Actual behavior
+
+Status
+
+Status
+
+Status
+
+Use actual TypeScript definitions and implementation behavior.
+
+Do not assume every prop behaves identically on every platform.
+
+Task 5: Explain prop interactions
+
+Document how properties interact with one another.
+
+Examples to investigate:
+
+What happens when intensity is zero?
+
+Does blur override material defaults?
+
+What happens when a material is changed while intensity is customized?
+
+How does quality affect rendering?
+
+What happens when a platform does not support a requested effect?
+
+How do opacity, tint, refraction, and distortion interact?
+
+Does animation use native/UI-thread updates or JavaScript updates?
+
+What happens when multiple effects are combined?
+
+Include only interactions confirmed by the implementation.
+
+Add a dedicated section:
+
+Property Behavior and Precedence
+
+Explain:
+
+Default values.
+
+Explicit values.
+
+Material preset defaults.
+
+Platform-specific overrides.
+
+Unsupported property behavior.
+
+Fallback behavior.
+
+Task 6: Add property compatibility indicators
+
+Developers should immediately understand the availability of each property.
+
+Use consistent indicators:
+
+Fully supported.
+
+Partially supported.
+
+Platform-dependent.
+
+System-controlled.
+
+Unsupported.
+
+Not yet tested.
+
+Avoid generic statements such as "all props are supported everywhere."
+
+Where appropriate, explain whether a property is ignored, approximated, or replaced by native system behavior.
+
+If the library supports development warnings for unsupported capabilities, document them.
+
+If it does not, report that as a possible implementation improvement instead of claiming that warnings exist.
+
+4. P1 – Architecture Documentation
+
+Task 7: Add a high-level architecture diagram
+
+Add a visual architecture diagram to the introduction or architecture overview.
+
+Suggested architecture:
+
+React Native Application
+|
+v
+Public TypeScript API
+|
+v
+Component Layer
+|
+v
+Platform Renderer Selection
+|
++------------------+
+|         |        |
+v         v        v
+iOS      Android    Web
+|         |        |
+v         v        v
+Swift     Kotlin     CSS
+UIKit     GPU/       Browser
+Metal     Shader     Rendering
+|         |        |
++---------+--------+
+|
+v
+Final Glass Output
+
+This is a conceptual diagram. Adjust it to match the actual implementation.
+
+Do not claim that all renderers use the same rendering pipeline.
+
+Task 8: Improve Android architecture documentation
+
+Android rendering is one of the most important technical differentiators of this library.
+
+Provide a detailed explanation of:
+
+GlassBackdrop.
+
+Backdrop capture.
+
+Rendering pipeline.
+
+Shader implementation.
+
+AGSL or other GPU APIs, if actually used.
+
+Texture handling.
+
+Blur implementation.
+
+Refraction.
+
+Distortion.
+
+Multiple glass components.
+
+Clipping and border radius.
+
+Rendering limitations.
+
+Performance considerations.
+
+Explain why backdrop capture is necessary.
+
+Document what happens when:
+
+Multiple GlassBackdrop components exist.
+
+Multiple LiquidGlassView components are rendered.
+
+Glass components overlap.
+
+The backdrop content changes.
+
+Components are inside ScrollView.
+
+Components are inside FlatList.
+
+Components are rendered inside Modal.
+
+Components are rendered inside navigation screens.
+
+Do not promise correct behavior for these scenarios without verification.
+
+Task 9: Improve iOS architecture documentation
+
+Explain:
+
+Native rendering implementation.
+
+UIKit integration.
+
+System glass materials.
+
+iOS 26-specific behavior.
+
+Compatibility with older iOS versions.
+
+Metal usage, if implemented.
+
+Material selection.
+
+Fallback behavior.
+
+Native interaction.
+
+Accessibility integration.
+
+Clearly distinguish system-provided glass effects from custom rendering.
+
+Do not imply that custom Metal rendering is used for effects that are implemented using UIKit.
+
+Task 10: Improve Web architecture documentation
+
+Document:
+
+Web renderer implementation.
+
+CSS backdrop-filter usage.
+
+Browser compatibility.
+
+Fallback behavior.
+
+React Native Web support.
+
+Vite support.
+
+Next.js support.
+
+SSR considerations.
+
+Limitations of browser rendering.
+
+Use consistent terminology.
+
+If CSS backdrop-filter is the rendering mechanism, call it the CSS renderer rather than a generic fallback.
+
+5. P1 – Code Examples and Recipes
+
+Task 11: Improve recipes
+
+Review all existing recipes.
+
+Examples include:
+
+Glass headers.
+
+Glass tab bars.
+
+Glass cards.
+
+Image backgrounds.
+
+Modal integration.
+
+React Navigation integration.
+
+Settings controls.
+
+Every recipe should include:
+
+What the recipe demonstrates.
+
+Complete source code.
+
+Required imports.
+
+Dependencies.
+
+Expected appearance.
+
+Platform limitations.
+
+Common implementation mistakes.
+
+Provide standalone examples wherever possible.
+
+Task 12: Add more practical examples
+
+Consider adding these examples if the components support them:
+
+Glass bottom tab navigation.
+
+Glass top navigation.
+
+Glass search bar.
+
+Glass floating action button.
+
+Glass modal and bottom sheet.
+
+Glass onboarding screen.
+
+Glass profile card.
+
+Glass notification panel.
+
+Glass music player.
+
+Glass settings screen.
+
+Glass dashboard.
+
+Glass controls over an image background.
+
+Prioritize examples that demonstrate unique library capabilities.
+
+Do not add examples that depend on unsupported functionality.
+
+Task 13: Add React Navigation integration guide
+
+Include:
+
+Bottom tab navigation.
+
+Stack navigation.
+
+Transparent navigation headers.
+
+Glass tab bar.
+
+Safe area handling.
+
+Screen transition considerations.
+
+Android backdrop limitations.
+
+Modal navigation behavior.
+
+Use the actual supported navigation APIs and dependencies.
+
+6. P1 – Performance Documentation
+
+Task 14: Create a dedicated performance page
+
+Do not rely solely on claims such as GPU accelerated or high performance.
+
+Document the actual rendering costs and limitations.
+
+Cover:
+
+CPU utilization.
+
+GPU utilization.
+
+Memory consumption.
+
+Backdrop capture cost.
+
+Texture allocation.
+
+Multiple glass surfaces.
+
+Scrolling performance.
+
+Animation performance.
+
+Blur radius impact.
+
+Refraction and distortion costs.
+
+Low-end Android devices.
+
+Battery consumption considerations.
+
+Task 15: Add a benchmark section
+
+Create a benchmark framework or document the results from an existing benchmark app.
+
+Suggested scenarios:
+
+Scenario
+
+Test configuration
+
+Single glass
+
+1 component
+
+Multiple glass
+
+5 components
+
+Heavy glass
+
+10 components
+
+Stress test
+
+20 components
+
+Scrolling
+
+Glass over scrolling content
+
+Animation
+
+Animated intensity
+
+Large radius
+
+Maximum supported blur
+
+Complex effect
+
+Blur + refraction + distortion
+
+Collect:
+
+Average FPS.
+
+Frame time.
+
+Dropped frames.
+
+CPU usage.
+
+Memory usage.
+
+GPU time where measurable.
+
+Device model.
+
+OS version.
+
+Library version.
+
+Never invent benchmark numbers.
+
+If benchmarks are not available, publish the methodology and mark results as pending.
+
+7. P2 – Developer Experience
+
+Task 16: Improve troubleshooting
+
+Expand the FAQ and troubleshooting section.
+
+Cover:
+
+Installation issues
+
+Package installation failure.
+
+CocoaPods installation failure.
+
+Metro resolution errors.
+
+Native linking issues.
+
+New Architecture configuration.
+
+Missing native component errors.
+
+Android issues
+
+Black or transparent rendering.
+
+Backdrop not visible.
+
+Shader compilation failure.
+
+Incorrect clipping.
+
+Performance drops.
+
+Android version limitations.
+
+iOS issues
+
+Glass effect not visible.
+
+System material differences.
+
+Simulator versus physical device differences.
+
+Deployment target errors.
+
+Native rendering issues.
+
+Expo issues
+
+Component unavailable in Expo Go.
+
+Development build configuration.
+
+EAS Build failures.
+
+Native dependency configuration.
+
+Web issues
+
+Browser does not support backdrop-filter.
+
+SSR errors.
+
+Incorrect stacking context.
+
+z-index problems.
+
+Missing styles.
+
+Each troubleshooting item should contain:
+
+Symptom.
+
+Possible cause.
+
+Solution.
+
+Relevant platform.
+
+Verification instructions.
+
+Task 17: Add release documentation
+
+Add:
+
+Changelog.
+
+Version history.
+
+Breaking changes.
+
+Deprecated properties.
+
+Migration guides.
+
+Known issues.
+
+Upgrade instructions.
+
+Follow semantic versioning.
+
+Task 18: Improve TypeScript documentation
+
+Provide:
+
+Exported component types.
+
+Public interfaces.
+
+Material types.
+
+Quality types.
+
+Renderer types.
+
+Theme types.
+
+Event callback types.
+
+Example usage with TypeScript.
+
+Ensure documentation types match actual package exports.
+
+8. P2 – Accessibility
+
+Task 19: Expand accessibility documentation
+
+Document:
+
+Reduced transparency.
+
+Reduced motion.
+
+Accessibility labels.
+
+Accessibility roles.
+
+Screen reader behavior.
+
+Color contrast.
+
+Solid background fallback.
+
+Touch target requirements.
+
+Interaction states.
+
+Explain whether accessibility behavior is automatic or requires explicit developer configuration.
+
+Do not claim OS-level accessibility integration without implementation evidence.
+
+9. Website and Navigation Improvements
+
+Task 20: Improve discoverability
+
+Preserve the current navigation but ensure the following sections are easy to find:
+
+Getting Started.
+
+Installation.
+
+Components.
+
+API Reference.
+
+Platform Compatibility.
+
+Architecture.
+
+Performance.
+
+Recipes.
+
+Troubleshooting.
+
+Changelog.
+
+Add a visible compatibility link.
+
+Add clear navigation between related component references.
+
+Task 21: Improve component documentation consistency
+
+Every component page should use the same structure, headings, code formatting, and props table format.
+
+Avoid inconsistent terminology.
+
+For example, do not alternate between:
+
+Glass rendering engine.
+
+Glass renderer.
+
+Blur engine.
+
+Native glass system.
+
+Define the terminology and use it consistently.
+
+Task 22: Improve visual documentation
+
+Preserve the existing design.
+
+Where useful, add:
+
+Architecture diagrams.
+
+Rendering pipeline diagrams.
+
+Platform comparison diagrams.
+
+Prop compatibility tables.
+
+Before/after examples.
+
+Live component demonstrations.
+
+Ensure responsive behavior on desktop, tablet, and mobile.
+
+Do not add decorative graphics that make technical documentation harder to read.
+
+10. Technical Validation Requirements
+
+Before marking the documentation update complete, perform these checks.
+
+Source validation
+
+Verify all component exports.
+
+Verify all prop names.
+
+Verify all TypeScript types.
+
+Verify all defaults.
+
+Verify all installation commands.
+
+Verify all package names.
+
+Verify all platform requirements.
+
+Verify all native implementation claims.
+
+Example validation
+
+Check every import.
+
+Check every example for missing dependencies.
+
+Check all JSX syntax.
+
+Check TypeScript examples.
+
+Build or execute examples where feasible.
+
+Test links and navigation.
+
+Website validation
+
+Run the documentation build.
+
+Resolve broken links.
+
+Resolve missing images.
+
+Resolve broken code highlighting.
+
+Check responsive layouts.
+
+Check browser console errors.
+
+Verify existing interactive demos.
+
+Verify GitHub Pages deployment configuration.
+
+Content validation
+
+No invented capabilities.
+
+No unverified performance claims.
+
+No misleading platform support statements.
+
+No inconsistent prop definitions.
+
+No contradictory installation instructions.
+
+No outdated API references.
+
+11. Implementation Order
+
+Execute the improvements in the following order.
+
+Phase
+
+Work
+
+Priority
+
+Phase 1
+
+Compatibility and source verification
+
+P0
+
+Phase 2
+
+Installation improvements
+
+P0
+
+Phase 3
+
+Component and API documentation
+
+P1
+
+Phase 4
+
+Architecture diagrams and technical details
+
+P1
+
+Phase 5
+
+Examples and recipes
+
+P1
+
+Phase 6
+
+Performance and benchmarks
+
+P1
+
+Phase 7
+
+Troubleshooting and FAQs
+
+P2
+
+Phase 8
+
+Accessibility and release documentation
+
+P2
+
+Phase 9
+
+Navigation and visual polish
+
+P2
+
+Phase 10
+
+Complete validation
+
+P0
+
+12. Final Acceptance Criteria
+
+The documentation update is considered complete only when:
+
+All existing pages have been reviewed.
+
+Existing website functionality remains intact.
+
+Every documented component exists in the package.
+
+Every documented property matches the actual TypeScript API.
+
+Installation guides have been verified against actual configurations.
+
+Platform support clearly distinguishes implemented and tested capabilities.
+
+Code examples are reproducible.
+
+Architecture documentation reflects actual native implementations.
+
+Performance claims are backed by measurements or clearly marked as unverified.
+
+Troubleshooting covers common platform-specific problems.
+
+Documentation builds successfully.
+
+No critical broken links or missing assets remain.
+
+Existing responsive layouts and interactive demonstrations still work.
+
+GitHub Pages deployment succeeds.
+
+13. Final Instructions to the Coding Agent
+
+First inspect the repository, package.json, source files, TypeScript definitions, Android native code, iOS native code, Web implementation, tests, examples, and current documentation.
+
+Create an internal documentation audit before editing.
+
+Then implement the improvements directly in the existing documentation project.
+
+Do not stop after producing recommendations or a plan.
+
+Make the actual documentation changes.
+
+Do not rewrite the entire website unnecessarily.
+
+Keep the current design and improve the quality of the content.
+
+For anything that cannot be verified from source code or tests, mark it as requiring verification instead of inventing an answer.
+
+At the end, provide a completion report containing:
+
+Files modified.
+
+Documentation pages updated.
+
+New sections added.
+
+Technical inconsistencies corrected.
+
+Examples validated.
+
+Compatibility information verified.
+
+Build and validation results.
+
+Remaining unverified items.
+
+Recommended next improvements.
+
+The final result should feel like documentation maintained by a mature open-source React Native library, not a simple project lan
+
+
+My additional recommendations
+Beyond the agent's instructions, I would prioritize these three things:
+
+
+
+
+
+
+
+
+
+
+1. Interactive component playground
+
+Allow developers to adjust intensity, blur, tint, refraction and material, and see the effect immediately. This can become one of the strongest features of your documentation.
+
+
+
+https://images.openai.com/static-rsc-4/j0YryXBg28889wwlsYH7pAkC4-wxIN1U6VTc74wIweDt0XNz4rK2o2kIC7CVxiZ5CDPrWZI4neTkk6oB2CbrXTtOMa53jyzf2mwjpd8jRL3TuHMYjIo3Jc-GFdwrw94ABfn-rnYBGHynemECK0ZizsATx1GvRnba96XNVzx91jhxaW8tCfdO9v299x09sXqj?purpose=fullsize
+
+
+
+
+
+
+
+
+
+
+2. Real performance reports
+
+Publish measurements from actual Android and iOS devices. This is particularly important when marketing the library as a native GPU-based solution.
+
+
+
+https://images.openai.com/static-rsc-4/aYGsGnJnIqn2uzCGntE23NojJkNMipjHjLWLT7CvctXkZLnVjZh3IXzoZ4SIziOcoH9Wm9A-HVcFeAWM999yK6hh-2bJB3bSGpSR3inyNgBQ6-HtN_8VjUOlOB33WMGWh19H-XNSsp9en3dvn3bQVQoy1c23ZIhm-jF3jz0RQksHrAmWr68I3yLXtWnY-arw?purpose=fullsize
+
+
+
+
+
+
+
+
+
+3. Open-source contributor documentation
+https://images.openai.com/static-rsc-4/mtxeqDz1EY3BoZT9koHj49S6h3-mAZJ43D3vbIEj_kpC0x_KPJmIyCL_nc8t81F3w44EI2rlDY1TN2gWzu7oqH2gK-GGIDuxaKTKBK9tsOelvOhPvIlASShyZdy2PvaElRGb-6YAnOx2HnsKCX_0YeQCNZ-q_AyxeIdVF4bJ2oK6bHpEwXbHnBnm1bzS-IFo?purpose=fullsize
+Add CONTRIBUTING.md, development setup, architecture decisions, testing instructions and release workflow.
+
+. Recommended images by documentation section
+
+
+
+
+
+
+
+
+
+
+1. Homepage hero image
+
+Show a beautiful glass interface floating over a colorful background.
+- Floating glass buttons
+- Translucent navigation
+- Refraction and highlights
+- Light and dark appearance
+Highest priority
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. Core concepts – Glass materials
+
+Show visual differences between:
+- Liquid Glass
+- Frosted Glass
+- Regular blur
+- Transparent glass
+- Tinted glass
+
+
+
+
+
+
+
+
+
+
+
+
+
+3. Rendering effects
+
+Demonstrate:
+- Refraction
+- Distortion
+- Chromatic aberration
+- Edge lighting
+- Specular highlights
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Component showcase
+
+Use actual screenshots generated by your library:
+- LiquidGlassButton
+- LiquidGlassCard
+- LiquidGlassView
+- FrostedGlass
+- Glass tab bar
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Theme documentation
+
+Show identical glass components in:
+- Light mode
+- Dark mode
+- Colored tint
+- Different background environments
+
+
+
+
+
+
+
+
+
+
+
+
+
+6. Architecture
+
+Use technical diagrams, not decorative images:
+- React Native API
+- Native Android renderer
+- Native iOS renderer
+- Web renderer
+- Rendering pipeline
+
+
+
+2. Images I would specifically add to the component documentation
+These should be actual screenshots of your library running, not reference images from other products.
+
+
+
+
+
+
+
+
+
+
+LiquidGlassButton
+Button with glass material and highlights.
+
+
+
+
+
+
+
+
+
+
+LiquidGlassCard
+Glass card with content and shadow.
+
+
+
+
+
+
+
+
+
+
+LiquidGlassView
+Glass surface over a backdrop.
+
+
+
+
+
+
+
+
+
+
+FrostedGlass
+Frosted material with background blur.
+
+3. Technical diagrams you should create
+These will provide more value than decorative images.
+Diagram	What it explains
+Rendering architecture	JS to native rendering
+Android backdrop flow	Capture, shader and composition
+iOS rendering flow	System material and native renderer
+Web rendering flow	CSS backdrop-filter and fallback
+Glass layering	Foreground and background relationship
+Quality selection	Low, balanced, high quality
+Component hierarchy	How library components relate
+
+For Android, I particularly recommend a detailed backdrop rendering diagram because it is one of the more technically interesting aspects of your library.
+4. Recommended image design language
+Use a consistent visual style throughout the documentation.
+Suggested visual direction
+
+
+
+
+
+
+
+
+
+
+Abstract glass backgrounds
+
+
+
+
+
+
+
+
+
+
+Minimal UI illustrations
+
+
+
+
+
+
+
+
+
+
+Dark glass visuals
+
+
+
+
+
+
+
+
+
+
+Optical effect illustrations
+
+Design rules
+- Consistent rounded corners.
+- Subtle shadows.
+- Colorful but controlled backgrounds.
+- Minimal text inside illustrations.
+- Avoid watermarks and stock-photo aesthetics.
+- Prefer actual library screenshots wherever possible.
+
+5. Give this instruction to your coding agent
+Documentation Visual Assets Enhancement
+Improve the existing React Native Liquid Glass documentation website by adding professional visual assets.
+
+Website:
+https://sachinmeenasipl.github.io/react-native-glass-effect/
+Objective
+Make the documentation more visual, engaging, and technically understandable without changing its existing design identity.
+1. Homepage
+Add a premium hero visual demonstrating the library's glass rendering capabilities.
+
+Include:
+- Floating glass components.
+- Transparent glass surfaces.
+- Frosted glass.
+- Refraction and distortion.
+- Colorful backgrounds.
+- Light and dark glass appearances.
+The hero should communicate the library's purpose immediately.
+2. Core Concepts
+Add a visual comparison gallery demonstrating:
+- Liquid Glass.
+- Frosted Glass.
+- Standard Blur.
+- Transparent Glass.
+- Tinted Glass.
+- Glass with Refraction.
+Use consistent backgrounds and component dimensions to make comparisons meaningful.
+3. Component Documentation
+Add actual library screenshots to the relevant component pages:
+- LiquidGlassView.
+- GlassBackdrop.
+- LiquidGlass.
+- FrostedGlass.
+- LiquidGlassButton.
+- LiquidGlassCard.
+- GlassAdjuster.
+Use actual output from the library wherever possible.
+
+Do not use generic stock images as proof of component functionality.
+4. Platform Comparison
+Create a visual comparison section for:
+- Android.
+- iOS.
+- Web.
+Show equivalent components on each platform, with notes about actual rendering differences.
+
+Only use screenshots from verified implementations.
+5. Architecture Diagrams
+Create technical diagrams for:
+- Overall library architecture.
+- Android rendering pipeline.
+- iOS rendering pipeline.
+- Web rendering pipeline.
+- Backdrop capture and composition.
+- Glass layering and component hierarchy.
+Use editable SVG diagrams where possible.
+6. Interactive Visual Demonstrations
+Where practical, extend the existing component demos to allow users to modify:
+- Material.
+- Blur.
+- Intensity.
+- Tint.
+- Refraction.
+- Distortion.
+- Quality.
+- Border radius.
+Show the result immediately.
+
+Only expose properties actually implemented by the library.
+7. Asset Quality
+- Prefer WebP or optimized SVG.
+- Use descriptive filenames.
+- Add alt text.
+- Use responsive image sizing.
+- Avoid unnecessary large images.
+- Lazy-load non-critical images.
+- Maintain consistent aspect ratios.
+- Optimize images for GitHub Pages.
+Suggested asset structure:
+
+docs/
+assets/
+hero/
+concepts/
+components/
+platforms/
+architecture/
+effects/
+themes/
+8. Important Restrictions
+- Preserve the current website layout and visual identity.
+- Do not replace existing documentation content.
+- Do not use Apple screenshots in a way that implies endorsement.
+- Clearly distinguish inspiration/reference visuals from actual library output.
+- Do not present generated illustrations as screenshots of working native implementations.
+- Do not invent platform capabilities.
+- Keep technical diagrams accurate.
+- Ensure all assets load correctly after GitHub Pages deployment.
+9. Completion
+After implementation:
+1. List all new assets.
+2. List pages updated.
+3. Verify image loading.
+4. Verify responsive behavior.
+5. Verify GitHub Pages paths.
+6. Check website build.
+7. Report missing screenshots that require real-device capture.
+Prioritize genuine library screenshots over decorative images.
+
+
+
+
+6. Official design reference
+Apple's Human Interface Guidelines – Materials is a useful reference for understanding where Liquid Glass should be used, how it interacts with backgrounds, and how to preserve legibility. Apple also provides official design resources.

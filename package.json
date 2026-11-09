@@ -1,6 +1,6 @@
 {
   "name": "react-native-liquid-glass-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Liquid Glass surfaces for React Native, Expo and the web: real background blur, refraction and lighting on Android, native materials on iOS, CSS blur on the web.",
   "author": "Sachin Meena <sachin.meena3198@gmail.com>",
   "homepage": "https://sachinmeenasipl.github.io/react-native-glass-effect/",
