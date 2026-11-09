@@ -1,6 +1,6 @@
 {
   "name": "react-native-liquid-glass-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Liquid Glass (glassmorphism) for React Native, Expo and the web: real-time background blur, iOS 26 UIGlassEffect, Android AGSL refraction shader, frosted glass views, buttons and cards.",
   "author": "Sachin Meena <sachin.meena3198@gmail.com>",
   "homepage": "https://sachinmeenasipl.github.io/react-native-glass-effect/",

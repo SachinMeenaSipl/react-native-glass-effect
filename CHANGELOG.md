@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0
 
 - New: Expo support documented and verified (Expo SDK 58 dev build; Expo Go uses the plain-view fallback)
 - New: web support (React, Vite, Next.js with SSR, Expo web). Web bundles resolve a web build through the `browser` and `node` export conditions, so native component specs are never bundled for the web
